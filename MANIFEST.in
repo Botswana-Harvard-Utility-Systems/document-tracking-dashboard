@@ -1,0 +1,1 @@
+recursive-include document_tracking_dashboard/templates *

@@ -1,0 +1,46 @@
+{% extends "edc_dashboard/listboard.html" %}
+{% load admin_urls %}
+{% load edc_base_extras %}
+
+{% block listboard_panel %}
+    <a id="document_add" title="add document" class="btn btn-sm btn-default" role="button"
+        href="{{ document_add_url }}?next={{ document_listboard_url }}">
+            <i class="fa fa-plus fa-sm"></i> Add Document
+    </a>
+{% endblock listboard_panel %}
+
+{% block listboard_table_header %}
+    <!-- begin results header -->
+    <th>#</th>
+    <th></th>
+    <th>Document Identifier</th>
+    <th>Sender</th>
+    <th>Document Name</th>
+    <th>Document Type</th>
+    <th>Document</th>
+    <th>Modified</th>
+    <th>Host</th>
+    <!-- end results header -->
+{% endblock listboard_table_header %}
+
+
+{% block listboard_table_button_column %}
+    <td style="white-space: nowrap;">
+    <div class="btn-group">
+
+    </div>
+    </td>
+{% endblock listboard_table_button_column %}
+
+
+{% block listboard_table_columns %}
+
+    <td>{{ result.doc_identifier }} </td>
+    <td nowrap>{{ result.doc_sender }}</td>
+    <td nowrap>{{ result.document_name }}</td>
+    <td nowrap>{{ result.doc_type }}</td>
+    <td nowrap>{{ result.file }}</td>
+    <td nowrap>{{ result.object.modified|date:"SHORT_DATETIME_FORMAT" }}</td>  
+    <td nowrap>{{ result.hostname_created }}</td>
+
+{% endblock listboard_table_columns %}

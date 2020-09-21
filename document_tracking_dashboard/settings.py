@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'document_tracking_dashboard.apps.AppConfig',
 ]
 
 MIDDLEWARE = [
@@ -118,3 +119,13 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
+
+# dashboards
+DASHBOARD_URL_NAMES = {
+    'document_listboard_url': 'document_tracking_dashboard:document_listboard_url',
+}
+
+DASHBOARD_BASE_TEMPLATES = {
+    'listboard_base_template': 'bhp_utility_systems/base.html',
+    'document_listboard_template': 'document_tracking_dashboard/document/document_listboard.html',
+}
