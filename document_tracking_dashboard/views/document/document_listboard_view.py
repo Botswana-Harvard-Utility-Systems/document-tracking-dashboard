@@ -17,7 +17,7 @@ class DocumentListBoardView(
     listboard_template = 'document_listboard_template'
     listboard_url = 'document_listboard_url'
     listboard_panel_style = 'info'
-    listboard_fa_icon = "fa-user-plus"
+    listboard_fa_icon = "fas fa-file"
 
     model = 'document_tracking.document'
     model_wrapper_cls = DocumentModelWrapper

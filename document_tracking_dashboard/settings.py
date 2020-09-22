@@ -122,10 +122,12 @@ STATIC_URL = '/static/'
 
 # dashboards
 DASHBOARD_URL_NAMES = {
+    'document_dashboard_url': 'document_tracking_dashboard:document_dashboard_url',
     'document_listboard_url': 'document_tracking_dashboard:document_listboard_url',
 }
 
 DASHBOARD_BASE_TEMPLATES = {
     'listboard_base_template': 'bhp_utility_systems/base.html',
+    'document_dashboard_template': 'document_tracking_dashboard/document/document_dashboard.html',
     'document_listboard_template': 'document_tracking_dashboard/document/document_listboard.html',
 }

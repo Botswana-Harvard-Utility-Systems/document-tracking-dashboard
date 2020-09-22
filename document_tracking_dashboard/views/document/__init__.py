@@ -1,1 +1,2 @@
+from .document_dashboard import DashboardView
 from .document_listboard_view import DocumentListBoardView

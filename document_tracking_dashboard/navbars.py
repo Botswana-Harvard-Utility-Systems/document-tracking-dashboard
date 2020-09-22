@@ -8,6 +8,16 @@ document_tracking_dashboard = Navbar(name='document_tracking_dashboard')
 
 document_tracking_dashboard.append_item(
     NavbarItem(
+        name='procurement',
+        title='Procurement',
+        label='Procurement',
+        fa_icon='fa fa-list-alt',
+        url_name=settings.DASHBOARD_URL_NAMES[
+            'procurement_url'],
+        no_url_namespace=no_url_namespace))
+
+document_tracking_dashboard.append_item(
+    NavbarItem(
         name='documents',
         title='Documents',
         label='Documents',
