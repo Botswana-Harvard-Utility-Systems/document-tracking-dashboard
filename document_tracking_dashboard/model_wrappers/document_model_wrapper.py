@@ -1,11 +1,13 @@
 from django.conf import settings
 from edc_model_wrapper import ModelWrapper
 
-from .document_model_wrapper_mixin import \
-    DocumentModelWrapperMixin
+from .document_model_wrapper_mixin import DocumentModelWrapperMixin
+# from .sent_document_model_wrapper_mixin import SentDocumentModelWrapperMixin
+from .sent_document_model_wrapper import SentDocumentModelWrapper
 
 
-class DocumentModelWrapper(DocumentModelWrapperMixin, ModelWrapper):
+class DocumentModelWrapper(DocumentModelWrapperMixin,
+                           SentDocumentModelWrapper, ModelWrapper):
 
     model = 'document_tracking.document'
     querystring_attrs = ['doc_identifier']

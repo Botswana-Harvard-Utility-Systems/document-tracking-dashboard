@@ -21,9 +21,19 @@ document_tracking_dashboard.append_item(
         name='documents',
         title='Documents',
         label='Documents',
-        fa_icon='fa fa-list-alt',
+        fa_icon='fas fa-file',
         url_name=settings.DASHBOARD_URL_NAMES[
             'document_listboard_url'],
+        no_url_namespace=no_url_namespace))
+
+document_tracking_dashboard.append_item(
+    NavbarItem(
+        name='CMS',
+        title='CMS',
+        label='CMS',
+        fa_icon='',
+        url_name=settings.DASHBOARD_URL_NAMES[
+            'cms_url'],
         no_url_namespace=no_url_namespace))
 
 

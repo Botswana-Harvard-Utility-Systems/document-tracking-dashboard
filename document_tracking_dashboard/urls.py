@@ -7,7 +7,8 @@ from django.urls import path
 from edc_dashboard import UrlConfig
 
 from .patterns import doc_identifier
-from .views import DashboardView, DocumentListBoardView, HomeView
+from .views import SentDocumentListBoardView, DashboardView, \
+    DocumentListBoardView, HomeView
 app_name = 'document_tracking_dashboard'
 
 document_listboard_url_config = UrlConfig(
@@ -24,6 +25,13 @@ document_dashboard_url_config = UrlConfig(
     identifier_label='doc_identifier',
     identifier_pattern=doc_identifier)
 
+sent_document_listboard_urlconfig = UrlConfig(
+    url_name='sent_document_listboard_url',
+    view_class=SentDocumentListBoardView,
+    label='sent_document_listboard',
+    identifier_label='doc_identifier',
+    identifier_pattern=doc_identifier)
+
 
 urlpatterns = [
 ]
@@ -31,3 +39,4 @@ urlpatterns = [
 urlpatterns += [path('document/', HomeView.as_view(), name='document_url')]
 urlpatterns += document_dashboard_url_config.dashboard_urls
 urlpatterns += document_listboard_url_config.listboard_urls
+urlpatterns += sent_document_listboard_urlconfig.listboard_urls

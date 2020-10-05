@@ -1,3 +1,4 @@
+from django.apps import apps as django_apps
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ValidationError
 from django.utils.decorators import method_decorator
@@ -25,11 +26,16 @@ class DashboardView(NavbarViewMixin, EdcBaseViewMixin, TemplateView):
         else:
             return document
 
+    @property
+    def sent_document_cls(self):
+        return django_apps.get_model('document_tracking.senddocument')
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         doc_identifier = kwargs.get('doc_identifier', None)
         context.update(
-            document=self.document(doc_identifier=doc_identifier),)
+            document=self.document(doc_identifier=doc_identifier),
+            send_document_url=self.sent_document_cls().get_absolute_url(),)
         return context
 
     @method_decorator(login_required)

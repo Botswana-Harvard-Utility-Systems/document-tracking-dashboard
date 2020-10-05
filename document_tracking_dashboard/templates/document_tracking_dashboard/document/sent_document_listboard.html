@@ -4,10 +4,7 @@
 {% load document_dashboard_extras %}
 
 {% block listboard_panel %}
-    <a id="document_add" title="add document" class="btn btn-sm btn-default" role="button"
-        href="{{ document_add_url }}?next={{ document_listboard_url }}">
-            <i class="fa fa-plus fa-sm"></i> Add Document
-    </a>
+
 {% endblock listboard_panel %}
 
 {% block listboard_table_header %}
@@ -15,10 +12,12 @@
     <th>#</th>
     <th></th>
     <th>Document Identifier</th>
-    <th>Document Name</th>
-    <th>Document</th>
-    <th>Modified</th>
-    <th>Host</th>
+    <th>Department</th>
+    <th>Receiving Personnel</th>
+    <th>Status</th>
+    <th>Action-Priority</th>
+    <th>Comment</th>
+    <th>Action-Date</th>
     <!-- end results header -->
 {% endblock listboard_table_header %}
 
@@ -42,9 +41,11 @@
 {% block listboard_table_columns %}
 
     <td>{{ result.doc_identifier }} </td>
-    <td nowrap>{{ result.document_name }}</td>
-    <td nowrap>{{ result.file }}</td>
-    <td nowrap>{{ result.object.modified|date:"SHORT_DATETIME_FORMAT" }}</td>  
-    <td nowrap>{{ result.hostname_created }}</td>
+    <td nowrap>{{ result.department }}</td>
+    <td nowrap>{{ result.send_to }}</td>
+    <td nowrap>{{ result.status }}</td>
+    <td nowrap>{{ result.action_priority }}</td>
+    <td nowrap>{{ result.comment }}</td>
+    <td nowrap>{{ result.action_date }}</td>
 
 {% endblock listboard_table_columns %}
