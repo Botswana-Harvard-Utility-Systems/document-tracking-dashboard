@@ -1,13 +1,13 @@
+from django.apps import apps as django_apps
 from django.conf import settings
+from django.core.exceptions import ObjectDoesNotExist
+
 from edc_model_wrapper import ModelWrapper
 
-from .document_model_wrapper_mixin import DocumentModelWrapperMixin
-# from .sent_document_model_wrapper_mixin import SentDocumentModelWrapperMixin
-from .sent_document_model_wrapper import SentDocumentModelWrapper
+from .sent_document_model_wrapper_mixin import SentDocumentModelWrapperMixin
 
 
-class DocumentModelWrapper(DocumentModelWrapperMixin,
-                           SentDocumentModelWrapper, ModelWrapper):
+class DocumentModelWrapper(SentDocumentModelWrapperMixin, ModelWrapper):
 
     model = 'document_tracking.document'
     querystring_attrs = ['doc_identifier']
@@ -16,9 +16,39 @@ class DocumentModelWrapper(DocumentModelWrapperMixin,
                                 'document_listboard_url')
 
     @property
-    def document(self):
-        """"Returns a wrapped saved or unsaved document
+    def doc_identifier(self):
+        if self.document_model_obj:
+            return self.document_model_obj.doc_identifier
+        return None
+
+    @property
+    def document_model_obj(self):
+        """Returns a document model instance or None.
         """
-        model_obj = self.document_model_obj or self.document_cls(
-            **self.document_options)
-        return DocumentModelWrapper(model_obj=model_obj)
+        try:
+            return self.document_cls.objects.get(
+                **self.document_options)
+        except ObjectDoesNotExist:
+            return None
+
+    @property
+    def document_cls(self):
+        return django_apps.get_model('document_tracking.document')
+
+    @property
+    def create_document_options(self):
+        """Returns a dictionary of options to create a new
+        unpersisted document model instance.
+        """
+        options = dict(
+            doc_identifier=self.object.doc_identifier)
+        return options
+
+    @property
+    def document_options(self):
+        """Returns a dictionary of options to get an existing
+        document model instance.
+        """
+        options = dict(
+            doc_identifier=self.object.doc_identifier)
+        return options

@@ -1,5 +1,8 @@
 {% extends 'edc_base/base.html' %}
 
+{% load admin_urls %}
+{% load edc_base_extras %}
+{% load document_dashboard_extras %}
 
 {% block extra-styles %}
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css">
@@ -99,8 +102,9 @@
       </div>
       <div id="data-manager-panel" class="panel-collapse collapse in">
 
+		  <!--{% send_document_button result %}-->
 
-	    | <a href="{{ send_document_url }}?next={{ sent_document_listboard_url }} & doc_identifier= {{result.doc_identifier}}" class="btn btn-sm btn-primary" role="button"><svg class="svg-inline--fa fa-plus fa-w-14 fa-sm" aria-hidden="true" data-prefix="fa" data-icon="plus" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg=""><path fill="currentColor" d="M448 294.2v-76.4c0-13.3-10.7-24-24-24H286.2V56c0-13.3-10.7-24-24-24h-76.4c-13.3 0-24 10.7-24 24v137.8H24c-13.3 0-24 10.7-24 24v76.4c0 13.3 10.7 24 24 24h137.8V456c0 13.3 10.7 24 24 24h76.4c13.3 0 24-10.7 24-24V318.2H424c13.3 0 24-10.7 24-24z"></path></svg> Send</a>
+	    | <a href="{{ data_action_item_add_url }}" class="btn btn-sm btn-primary" role="button"><svg class="svg-inline--fa fa-plus fa-w-14 fa-sm" aria-hidden="true" data-prefix="fa" data-icon="plus" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg=""><path fill="currentColor" d="M448 294.2v-76.4c0-13.3-10.7-24-24-24H286.2V56c0-13.3-10.7-24-24-24h-76.4c-13.3 0-24 10.7-24 24v137.8H24c-13.3 0-24 10.7-24 24v76.4c0 13.3 10.7 24 24 24h137.8V456c0 13.3 10.7 24 24 24h76.4c13.3 0 24-10.7 24-24V318.2H424c13.3 0 24-10.7 24-24z"></path></svg> Send</a>
 		|
 		<a href="{% url sent_document_listboard_url %}" class="btn btn-sm btn-primary" role="button">See all</a>
 		<div class="panel-body">

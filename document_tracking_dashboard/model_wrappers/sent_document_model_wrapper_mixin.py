@@ -1,8 +1,12 @@
 from django.apps import apps as django_apps
 from django.core.exceptions import ObjectDoesNotExist
 
+from .sent_document_model_wrapper import SentDocumentModelWrapper
+
 
 class SentDocumentModelWrapperMixin:
+
+    sent_document_model_wrapper_cls = SentDocumentModelWrapper
 
     @property
     def doc_identifier(self):
@@ -22,7 +26,15 @@ class SentDocumentModelWrapperMixin:
 
     @property
     def sent_document_cls(self):
-        return django_apps.get_model('document_tracking.sentdocument')
+        return django_apps.get_model('document_tracking.senddocument')
+
+    @property
+    def sent_document(self):
+        """Returns a wrapped saved or unsaved subject screening.
+        """
+        model_obj = self.sent_document_model_obj or self.sent_document_cls(
+            **self.sent_document_options)
+        return self.sent_document_model_wrapper_cls(model_obj=model_obj)
 
     @property
     def create_sent_document_options(self):
