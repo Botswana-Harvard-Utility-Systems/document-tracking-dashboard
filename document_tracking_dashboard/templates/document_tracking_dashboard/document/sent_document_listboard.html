@@ -12,6 +12,7 @@
     <th>#</th>
     <th></th>
     <th>Document Identifier</th>
+    <th>Sender</th>
     <th>Department</th>
     <th>Receiving Personnel</th>
     <th>Status</th>
@@ -41,8 +42,9 @@
 {% block listboard_table_columns %}
 
     <td>{{ result.doc_identifier }} </td>
-    <td nowrap>{{ result.department }}</td>
-    <td nowrap>{{ result.send_to }}</td>
+    <td nowrap>{{ result.user_created }}</td>
+    <td nowrap>{{ result.object.department.dept_name }}</td>
+    <td nowrap>{{ result.object.send_to }}</td>
     <td nowrap>{{ result.status }}</td>
     <td nowrap>{{ result.action_priority }}</td>
     <td nowrap>{{ result.comment }}</td>
