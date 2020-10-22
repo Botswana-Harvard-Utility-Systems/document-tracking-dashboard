@@ -7,4 +7,4 @@ class HomeView(EdcBaseViewMixin, NavbarViewMixin, TemplateView):
 
     template_name = 'document_tracking_dashboard/home.html'
     navbar_name = 'document_tracking_dashboard'
-    navbar_selected_item = ''
+    navbar_selected_item = 'Document'

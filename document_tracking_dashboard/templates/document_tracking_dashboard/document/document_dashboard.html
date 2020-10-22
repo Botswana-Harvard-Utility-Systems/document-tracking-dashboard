@@ -88,9 +88,9 @@
    		<div class="panel panel-info">
 	      <div class="panel-heading">About Document</div>
 	      <div class="panel-body">
-			<b>Sender:</b> {{document.doc_sender}}</br>
-	      	<b>Document Name:</b> {{document.document_name}}</br>
-	      	<b>Document Type:</b> {{document.doc_type}}</br>
+			<b>Document Name:</b> {{document.document_name}}</br>
+			<b>Sender:</b> {{document.user_created}}</br>
+	      	<b>Sent To:</b> {{document.send_to}}</br>
 	      </div>
 	    </div>
 
@@ -108,8 +108,6 @@
 		|
 		<a href="{% url sent_document_listboard_url %}" class="btn btn-sm btn-primary" role="button">See all</a>
 		<div class="panel-body">
-
-	<p>No user actioned items</p>
 
 </div>
 
