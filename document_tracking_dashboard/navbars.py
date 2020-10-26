@@ -33,7 +33,7 @@ document_tracking_dashboard.append_item(
         label='CMS',
         fa_icon='',
         url_name=settings.DASHBOARD_URL_NAMES[
-            'bhp_personnel_url'],
+            'cms_url'],
         no_url_namespace=no_url_namespace))
 
 
