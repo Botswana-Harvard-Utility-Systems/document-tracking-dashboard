@@ -7,6 +7,7 @@ from edc_dashboard.view_mixins import ListboardFilterViewMixin, SearchFormViewMi
 from edc_dashboard.views import ListboardView
 from edc_navbar import NavbarViewMixin
 
+from document_tracking.models import SendDocument
 from ...model_wrappers import SentDocumentModelWrapper
 
 
@@ -31,9 +32,16 @@ class SentDocumentListBoardView(
     def dispatch(self, *args, **kwargs):
         return super().dispatch(*args, **kwargs)
 
+    def document(self, doc_identifier=None):
+        """Reeturn a new contract obj.
+        """
+        return SentDocumentModelWrapper(SendDocument(doc_identifier=doc_identifier))
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        doc_identifier = kwargs.get('doc_identifier', None)
         context.update(
+            document=self.document(doc_identifier=doc_identifier),
         )
         return context
 
