@@ -34,11 +34,6 @@
 
     {% edit_document_button result %}
     {% send_button result %}
-    {% if result.document_model_obj %}
-     <a id="btn-dashboard" class="btn btn-primary btn-sm" role="button"
-     title="add_dashboard" href="{% url document_dashboard_url result.doc_identifier %}">
-     <i class="fas fa-file"></i> Dashboard  <i class="fa fa-share"></i></a>
-    {% endif %}
     </div>
     </td>
 {% endblock listboard_table_button_column %}
