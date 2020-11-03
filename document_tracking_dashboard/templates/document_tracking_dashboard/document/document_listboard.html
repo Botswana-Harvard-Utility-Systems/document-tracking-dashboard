@@ -34,6 +34,11 @@
 
     {% edit_document_button result %}
     {% send_button result %}
+    {% if result.sent_document_model_obj %}
+     <a id="btn-list_board" class="btn btn-primary btn-sm" role="button"
+     title="btn-list_board" href="{% url sent_document_listboard_url %}">
+     <i class="fas fa-file"></i> View Documents  <i class="fa fa-share"></i></a>
+    {% endif %}
     </div>
     </td>
 {% endblock listboard_table_button_column %}
