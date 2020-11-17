@@ -50,6 +50,7 @@ class SentDocumentListBoardView(
         if kwargs.get('doc_identifier'):
             options.update(
                 {'doc_identifier': kwargs.get('doc_identifier')})
+        options.update({'send_to': request.user.id})
         return options
 
     def extra_search_options(self, search_term):

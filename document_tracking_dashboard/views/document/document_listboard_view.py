@@ -43,6 +43,7 @@ class DocumentListBoardView(
         if kwargs.get('doc_identifier'):
             options.update(
                 {'doc_identifier': kwargs.get('doc_identifier')})
+        options.update({'user_created': request.user.username})
         return options
 
     def extra_search_options(self, search_term):
