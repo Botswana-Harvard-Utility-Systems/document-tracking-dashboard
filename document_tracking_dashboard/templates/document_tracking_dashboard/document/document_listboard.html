@@ -9,6 +9,11 @@
             <i class="fa fa-plus fa-sm"></i> Add Document
     </a>
 
+    <a id="documents_sent" title="sent document" class="btn btn-sm btn-default" role="button"
+        href="{% url sent_document_listboard_url %}">
+            <i class="fa fa-plus fa-sm"></i> Sent Documents
+    </a>
+
     <a id="documents_view" title="add document" class="btn btn-sm btn-default" role="button"
         href="{% url sent_document_listboard_url %}">
             <i class="fa fa-plus fa-sm"></i> Documents Sent To Me
@@ -34,11 +39,6 @@
 
     {% edit_document_button result %}
     {% send_button result %}
-    {% if result.sent_document_model_obj %}
-     <a id="btn-list_board" class="btn btn-info btn-sm" role="button"
-     title="btn-list_board" href="{% url sent_document_listboard_url %}">
-     <i class="fas fa-file"></i> View Documents  <i class="fa fa-share"></i></a>
-    {% endif %}
     </div>
     </td>
 {% endblock listboard_table_button_column %}
@@ -48,7 +48,9 @@
 
     <td>{{ result.doc_identifier }} </td>
     <td nowrap>{{ result.document_name }}</td>
-    <td nowrap>{{ result.file }}</td>
+    <td nowrap><a href="{{ result.object.file.url }}"  target="_blank">
+                    Download Document</a>
+    </td>
     <td nowrap>{{ result.object.modified|date:"SHORT_DATETIME_FORMAT" }}</td>  
     <td nowrap>{{ result.user_created }}</td>
 
