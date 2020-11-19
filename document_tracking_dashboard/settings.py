@@ -125,6 +125,7 @@ DASHBOARD_URL_NAMES = {
     'document_dashboard_url': 'document_tracking_dashboard:document_dashboard_url',
     'document_listboard_url': 'document_tracking_dashboard:document_listboard_url',
     'sent_document_listboard_url': 'document_tracking_dashboard:sent_document_listboard_url',
+    'sent_listboard_url': 'document_tracking_dashboard:sent_listboard_url',
 }
 
 DASHBOARD_BASE_TEMPLATES = {
