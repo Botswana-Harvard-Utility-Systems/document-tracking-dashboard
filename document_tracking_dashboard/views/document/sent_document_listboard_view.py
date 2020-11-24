@@ -50,6 +50,10 @@ class SentDocumentListBoardView(
         if kwargs.get('doc_identifier'):
             options.update(
                 {'doc_identifier': kwargs.get('doc_identifier')})
+        if kwargs.get('group'):
+            options.update(
+                {'group': request.user.group}
+            )
         options.update({'send_to': request.user.id})
         return options
 
