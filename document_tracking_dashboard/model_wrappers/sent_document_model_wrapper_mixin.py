@@ -32,7 +32,7 @@ class SentDocumentModelWrapperMixin:
     def sent_document(self):
         """Returns a wrapped saved or unsaved subject screening.
         """
-        model_obj = self.sent_document_model_obj or self.sent_document_cls(
+        model_obj = self.sent_document_cls(
             **self.sent_document_options)
         return self.sent_document_model_wrapper_cls(model_obj=model_obj)
 

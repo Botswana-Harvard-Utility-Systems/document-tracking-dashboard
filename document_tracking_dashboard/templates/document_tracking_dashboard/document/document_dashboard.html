@@ -36,7 +36,6 @@
 		    <thead>
 		      <tr>
 		      	<th>#</th>
-		        <th>Edit document details</th>
 		        <th>Document Identifier</th>
 		        <th>Document Name</th>
 		        <th>Document</th>
@@ -45,22 +44,11 @@
 		    <tbody>
 		      <tr>
 		      	<td>{{ forloop.counter }}</td>
-		        <td style="white-space: nowrap;">
-			    <div class="btn-group">
-			     <a id="btn-document" class="btn btn-primary btn-sm" role="button"
-			     title="add_document" href="{{document.href }}">
-			     <i class="far fa-user-circle fa-sm"></i> Edit Document  <i class="fa fa-share"></i></a>
-			    </div>
 
-				    <a id="document_change_{{ record_id }}" title="{{ title }}" role="button"
-					   class="btn btn-default btn-sm"
-						   href="{{ href }}">
-						<i class="fa fa-pencil-alt fa-sm"></i>
-					</a>
-			    </td>
-		        <td>{{document.doc_identifier}}</td>
+		        <td>{{sent_document.doc_identifier}}</td>
 		        <td>{{document.document_name}}</td>
-		        <td>{{document.file}}</td>
+		        <td><a href="{{ document.file.url }}"  target="_blank">
+                    Download Document</a></td>
 		      </tr>
 		    </tbody>
 		  </table>
@@ -89,8 +77,7 @@
 	      <div class="panel-heading">About Document</div>
 	      <div class="panel-body">
 			<b>Document Name:</b> {{document.document_name}}</br>
-			<b>Sender:</b> {{document.user_created}}</br>
-	      	<b>Sent To:</b> {{document.send_to}}</br>
+			<b>Uploaded by:</b> {{document.user_created}}</br>
 	      </div>
 	    </div>
 
@@ -102,11 +89,9 @@
       </div>
       <div id="data-manager-panel" class="panel-collapse collapse in">
 
-		  <!--{% send_document_button result %}-->
-
 	    | <a href="{{ data_action_item_add_url }}" class="btn btn-sm btn-primary" role="button"><svg class="svg-inline--fa fa-plus fa-w-14 fa-sm" aria-hidden="true" data-prefix="fa" data-icon="plus" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg=""><path fill="currentColor" d="M448 294.2v-76.4c0-13.3-10.7-24-24-24H286.2V56c0-13.3-10.7-24-24-24h-76.4c-13.3 0-24 10.7-24 24v137.8H24c-13.3 0-24 10.7-24 24v76.4c0 13.3 10.7 24 24 24h137.8V456c0 13.3 10.7 24 24 24h76.4c13.3 0 24-10.7 24-24V318.2H424c13.3 0 24-10.7 24-24z"></path></svg> Send</a>
 		|
-		<a href="{% url sent_document_listboard_url %}" class="btn btn-sm btn-primary" role="button">See all</a>
+		<a href="{% url other_documents_listboard_url %}" class="btn btn-sm btn-primary" role="button">See all</a>
 		<div class="panel-body">
 
 </div>

@@ -11,12 +11,17 @@
 
     <a id="documents_sent" title="sent document" class="btn btn-sm btn-default" role="button"
         href="{% url sent_listboard_url %}">
-            <i class="fa fa-plus fa-sm"></i> Sent Documents
+            <i class="fa fa-list fa-sm"></i> Sent Documents
     </a>
 
     <a id="documents_view" title="add document" class="btn btn-sm btn-default" role="button"
-        href="{% url sent_document_listboard_url %}">
-            <i class="fa fa-plus fa-sm"></i> Documents Sent To Me
+        href="{% url other_documents_listboard_url %}">
+            <i class="fa fa-list fa-sm"></i> Documents Sent To Me
+    </a>
+
+    <a id="group_documents" title="group documents" class="btn btn-sm btn-default" role="button"
+        href="{% url group_documents_listboard_url %}">
+            <i class="fa fa-list fa-sm"></i> Groups I belong To
     </a>
 {% endblock listboard_panel %}
 
