@@ -7,7 +7,7 @@ from django.views.generic.base import TemplateView
 from edc_base.view_mixins import EdcBaseViewMixin
 from edc_navbar import NavbarViewMixin
 
-from document_tracking.models import Document
+from document_tracking.models import Document, SendDocument
 
 from ...model_wrappers import SentDocumentModelWrapper
 from ...model_wrappers import DocumentModelWrapper
@@ -31,6 +31,18 @@ class DashboardView(NavbarViewMixin, EdcBaseViewMixin, TemplateView):
         else:
             return document
 
+    def sent_document(self, doc_identifier=None):
+        """Return a sent document.
+        """
+        try:
+            sent_document = SendDocument.objects.get(doc_identifier=doc_identifier)
+        except SendDocument.DoesNotExist:
+            raise ValidationError(
+                f'Sent Document with identifier {doc_identifier} does '
+                f'not exist')
+        else:
+            return sent_document
+
     @property
     def sent_document_cls(self):
         return django_apps.get_model('document_tracking.senddocument')
@@ -46,6 +58,7 @@ class DashboardView(NavbarViewMixin, EdcBaseViewMixin, TemplateView):
         doc_identifier = kwargs.get('doc_identifier', None)
         context.update(
             document=self.document(doc_identifier=doc_identifier),
+            sent_document=self.sent_document(doc_identifier=doc_identifier),
             data_action_item_add_url=self.data_action_item(doc_identifier).href,
             send_document_url=self.sent_document_cls().get_absolute_url(),)
         return context

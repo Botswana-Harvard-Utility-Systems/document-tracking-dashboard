@@ -1,4 +1,5 @@
 from .document_dashboard import DashboardView
 from .document_listboard_view import DocumentListBoardView
-from .sent_document_listboard_view import SentDocumentListBoardView
+from .group_documents_listboard_view import GroupDocumentsListBoardView
+from .other_documents_listboard_view import OtherDocumentsListBoardView
 from .sent_listboard_view import SentListBoardView
