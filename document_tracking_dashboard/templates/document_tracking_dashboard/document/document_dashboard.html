@@ -37,7 +37,9 @@
 		      <tr>
 		      	<th>#</th>
 		        <th>Document Identifier</th>
+		        <th>Sender</th>
 		        <th>Document Name</th>
+		        <th>Sent-To</th>
 		        <th>Document</th>
 		      </tr>
 		    </thead>
@@ -46,7 +48,9 @@
 		      	<td>{{ forloop.counter }}</td>
 
 		        <td>{{sent_document.doc_identifier}}</td>
+		        <td>{{sent_document.user_created}}</td>
 		        <td>{{document.document_name}}</td>
+		        <td>{{sent_document.send_to}}</td>
 		        <td><a href="{{ document.file.url }}"  target="_blank">
                     Download Document</a></td>
 		      </tr>
@@ -76,20 +80,28 @@
    		<div class="panel panel-info">
 	      <div class="panel-heading">About Document</div>
 	      <div class="panel-body">
-			<b>Document Name:</b> {{document.document_name}}</br>
-			<b>Uploaded by:</b> {{document.user_created}}</br>
+			<b>Document Name:</b> {{document.document_name}}, {{document.document_form}}</br>
+			<b>Sent by:</b> {{sent_document.user_created}}</br>
+			<b>Sent To:</b> {{sent_document.send_to}}</br>
+			<b>Final Doc Destination:</b>{% if sent_document.final_destination != None %}
+			  {{sent_document.final_destination}} {% else %} -- {% endif %}</br>
+			<b>Receiver At Destination:</b>{% if sent_document.receiver_at_destination != None %}
+			  {{sent_document.receiver_at_destination}} {% else %} -- {% endif %}</br>
+			<b>Status:</b> {{sent_document.status}}</br>
+			<b>Priority:</b> {{sent_document.action_priority}}</br>
+			<b>Sent Date:</b> {{sent_document.action_date}}</br>
 	      </div>
 	    </div>
 
 	   <div class="panel panel-default">
       <div class="panel-heading">
           <h6 class="panel-title">
-              <a id="document_send" data-toggle="collapse" data-parent="#accordion" href="">Send Document <span class="caret"></span></a>
+              <a id="document_send" data-toggle="collapse" data-parent="#accordion" href="">Forward Document <span class="caret"></span></a>
           </h6>
       </div>
       <div id="data-manager-panel" class="panel-collapse collapse in">
 
-	    | <a href="{{ data_action_item_add_url }}" class="btn btn-sm btn-primary" role="button"><svg class="svg-inline--fa fa-plus fa-w-14 fa-sm" aria-hidden="true" data-prefix="fa" data-icon="plus" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg=""><path fill="currentColor" d="M448 294.2v-76.4c0-13.3-10.7-24-24-24H286.2V56c0-13.3-10.7-24-24-24h-76.4c-13.3 0-24 10.7-24 24v137.8H24c-13.3 0-24 10.7-24 24v76.4c0 13.3 10.7 24 24 24h137.8V456c0 13.3 10.7 24 24 24h76.4c13.3 0 24-10.7 24-24V318.2H424c13.3 0 24-10.7 24-24z"></path></svg> Send</a>
+	    | <a href="{{ data_action_item_add_url }}" class="btn btn-sm btn-primary" role="button"><svg class="svg-inline--fa fa-plus fa-w-14 fa-sm" aria-hidden="true" data-prefix="fa" data-icon="plus" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg=""><path fill="currentColor" d="M448 294.2v-76.4c0-13.3-10.7-24-24-24H286.2V56c0-13.3-10.7-24-24-24h-76.4c-13.3 0-24 10.7-24 24v137.8H24c-13.3 0-24 10.7-24 24v76.4c0 13.3 10.7 24 24 24h137.8V456c0 13.3 10.7 24 24 24h76.4c13.3 0 24-10.7 24-24V318.2H424c13.3 0 24-10.7 24-24z"></path></svg> Forward</a>
 		|
 		<a href="{% url other_documents_listboard_url %}" class="btn btn-sm btn-primary" role="button">See all</a>
 		<div class="panel-body">

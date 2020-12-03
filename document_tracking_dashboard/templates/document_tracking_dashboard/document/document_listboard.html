@@ -16,12 +16,12 @@
 
     <a id="documents_view" title="add document" class="btn btn-sm btn-default" role="button"
         href="{% url other_documents_listboard_url %}">
-            <i class="fa fa-list fa-sm"></i> Documents Sent To Me
+            <i class="fa fa-list-ul fa-sm"></i> Documents Sent To Me
     </a>
 
     <a id="group_documents" title="group documents" class="btn btn-sm btn-default" role="button"
         href="{% url group_documents_listboard_url %}">
-            <i class="fa fa-list fa-sm"></i> Groups I belong To
+            <i class="fa fa-list-alt fa-sm"></i> Groups I belong To
     </a>
 {% endblock listboard_panel %}
 
@@ -31,9 +31,10 @@
     <th></th>
     <th>Document Identifier</th>
     <th>Document Name</th>
+    <th>Document Form</th>
     <th>Document</th>
-    <th>Modified</th>
-    <th>User</th>
+    <th>Last Modified</th>
+    <th>Uploaded By</th>
     <!-- end results header -->
 {% endblock listboard_table_header %}
 
@@ -53,8 +54,9 @@
 
     <td>{{ result.doc_identifier }} </td>
     <td nowrap>{{ result.document_name }}</td>
-    <td nowrap><a href="{{ result.object.file.url }}"  target="_blank">
-                    Download Document</a>
+    <td nowrap>{{ result.document_form }}</td>
+    <td nowrap>{% if result.document_form != 'hard_copy' %}<a href="{{ result.object.file.url }}"  target="_blank">
+                    Download Document</a>{% else %} Not Downloadable {% endif %}
     </td>
     <td nowrap>{{ result.object.modified|date:"SHORT_DATETIME_FORMAT" }}</td>  
     <td nowrap>{{ result.user_created }}</td>

@@ -19,12 +19,13 @@
     <th></th>
     <th>Document Identifier</th>
     <th>Sender</th>
-    <th>Department</th>
-    <th>Receiving Personnel</th>
+    <th>Send-To</th>
     <th>Status</th>
-    <th>Action-Priority</th>
+    <th>Priority</th>
+    <th>Sent-Date</th>
+    <th>Final Destination</th>
+    <th>Receiver At Destination</th>
     <th>Comment</th>
-    <th>Action-Date</th>
     <!-- end results header -->
 {% endblock listboard_table_header %}
 
@@ -50,11 +51,14 @@
 
     <td>{{ result.doc_identifier }} </td>
     <td nowrap>{{ result.user_created }}</td>
-    <td nowrap>{{ result.object.department.dept_name }}</td>
     <td nowrap>{{ result.object.send_to }}</td>
     <td nowrap>{{ result.status }}</td>
     <td nowrap>{{ result.action_priority }}</td>
-    <td nowrap>{{ result.comment }}</td>
     <td nowrap>{{ result.action_date }}</td>
+    <td nowrap><center>{% if result.object.final_destination != None %}
+        {{result.object.final_destination}} {% else %} - - - - {% endif %}</center></td>
+    <td nowrap><center>{% if result.object.receiver_at_destination != None %}
+        {{result.object.receiver_at_destination}} {% else %} - - - - {% endif %}</center></td>
+    <td nowrap>{{ result.comment }}</td>
 
 {% endblock listboard_table_columns %}
