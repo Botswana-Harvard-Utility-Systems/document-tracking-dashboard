@@ -5,11 +5,11 @@
 
 {% block listboard_panel %}
     &ensp;
-	Overall Documents <span class="float-right badge badge-light round">24</span> &ensp;
-	Sent <span class="float-right badge badge-light round">0</span> &ensp;
-	Received <span class="float-right badge badge-light round">0</span> &ensp;
-	Processed <span class="float-right badge badge-light round">0</span> &ensp;
-	Pending/Processing <span class="float-right badge badge-light round">1</span> &ensp;
+	Overall Documents <span class="float-right badge badge-light round">{{ all }}</span> &ensp;
+	Sent <span class="float-right badge badge-light round">{{ sent }}</span> &ensp;
+	Received <span class="float-right badge badge-light round">{{ received }}</span> &ensp;
+	Processed <span class="float-right badge badge-light round">{{ processing }}</span> &ensp;
+	Pending/Processing <span class="float-right badge badge-light round">{{ processed }}</span> &ensp;
 
 {% endblock listboard_panel %}
 

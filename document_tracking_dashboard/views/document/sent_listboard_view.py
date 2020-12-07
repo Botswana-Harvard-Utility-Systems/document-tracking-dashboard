@@ -8,6 +8,7 @@ from edc_dashboard.views import ListboardView
 from edc_navbar import NavbarViewMixin
 
 from document_tracking.models import SendDocument
+
 from ...model_wrappers import SentDocumentModelWrapper
 
 
@@ -40,8 +41,24 @@ class SentListBoardView(
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         doc_identifier = kwargs.get('doc_identifier', None)
+
         context.update(
             document=self.document(doc_identifier=doc_identifier),
+            sent=SendDocument.objects.filter(
+                user_created=self.request.user.username).filter(
+                status='sent').count(),
+            received=SendDocument.objects.filter(
+                user_created=self.request.user.username).filter(
+                status='received').count(),
+            processing=SendDocument.objects.filter(
+                user_created=self.request.user.username).filter(
+                status='processing').count(),
+            processed=SendDocument.objects.filter(
+                user_created=self.request.user.username).filter(
+                status='processed').count(),
+            all=SendDocument.objects.filter(
+                user_created=self.request.user.username).count()
+
         )
         return context
 

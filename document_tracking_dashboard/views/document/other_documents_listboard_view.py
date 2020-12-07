@@ -44,6 +44,20 @@ class OtherDocumentsListBoardView(
         context.update(
             doc_identifier=doc_identifier,
             document=self.document(doc_identifier=doc_identifier),
+            sent=SendDocument.objects.filter(
+                send_to=self.request.user.id).filter(
+                status='sent').count(),
+            received=SendDocument.objects.filter(
+                send_to=self.request.user.id).filter(
+                status='received').count(),
+            processing=SendDocument.objects.filter(
+                send_to=self.request.user.id).filter(
+                status='processing').count(),
+            processed=SendDocument.objects.filter(
+                send_to=self.request.user.id).filter(
+                status='processed').count(),
+            all=SendDocument.objects.filter(
+                send_to=self.request.user.id).count()
         )
         return context
 
