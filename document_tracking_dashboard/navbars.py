@@ -11,7 +11,7 @@ document_tracking_dashboard.append_item(
         name='documents',
         title='Documents',
         label='Documents',
-        fa_icon='fas fa-file',
+        fa_icon='far fa-file',
         url_name=settings.DASHBOARD_URL_NAMES[
             'document_listboard_url'],
         no_url_namespace=no_url_namespace))
@@ -21,7 +21,7 @@ document_tracking_dashboard.append_item(
         name='sent_documents',
         title='Sent Documents',
         label='Sent Documents',
-        fa_icon='far fa-file',
+        fa_icon='fa fa-list-alt fa-sm',
         url_name=settings.DASHBOARD_URL_NAMES[
             'sent_listboard_url'],
         no_url_namespace=no_url_namespace))
