@@ -24,7 +24,7 @@ class SentListBoardView(
     model = 'document_tracking.senddocument'
     model_wrapper_cls = SentDocumentModelWrapper
     navbar_name = 'document_tracking_dashboard'
-    navbar_selected_item = 'Document'
+    navbar_selected_item = 'sent_documents'
     ordering = '-modified'
     paginate_by = 10
     search_form_url = 'sent_listboard_url'

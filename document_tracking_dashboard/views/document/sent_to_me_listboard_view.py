@@ -12,22 +12,22 @@ from document_tracking.models import SendDocument
 from ...model_wrappers import SentDocumentModelWrapper
 
 
-class GroupDocumentsListBoardView(
+class SentToMeListBoardView(
         NavbarViewMixin, EdcBaseViewMixin, ListboardFilterViewMixin,
         SearchFormViewMixin, ListboardView):
 
-    listboard_template = 'sent_document_listboard_template'
-    listboard_url = 'group_documents_listboard_url'
+    listboard_template = 'sent_to_me_listboard_template'
+    listboard_url = 'sent_to_me_listboard_url'
     listboard_panel_style = 'info'
     listboard_fa_icon = "fas fa-file"
 
     model = 'document_tracking.senddocument'
     model_wrapper_cls = SentDocumentModelWrapper
     navbar_name = 'document_tracking_dashboard'
-    navbar_selected_item = 'Document'
+    navbar_selected_item = 'documents_sent_to_me'
     ordering = '-modified'
     paginate_by = 10
-    search_form_url = 'group_documents_listboard_url'
+    search_form_url = 'sent_to_me_listboard_url'
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
@@ -75,7 +75,8 @@ class GroupDocumentsListBoardView(
 
                     options.update(
                         {'group': group_item.id})
-
+        else:
+            options.update({'send_to': request.user.id})
         return options
 
     def extra_search_options(self, search_term):

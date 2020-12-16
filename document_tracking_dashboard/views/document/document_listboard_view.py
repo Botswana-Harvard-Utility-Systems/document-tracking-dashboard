@@ -22,7 +22,7 @@ class DocumentListBoardView(
     model = 'document_tracking.document'
     model_wrapper_cls = DocumentModelWrapper
     navbar_name = 'document_tracking_dashboard'
-    navbar_selected_item = 'Document'
+    navbar_selected_item = 'documents'
     ordering = '-modified'
     paginate_by = 10
     search_form_url = 'document_listboard_url'

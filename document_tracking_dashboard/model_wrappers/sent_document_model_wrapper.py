@@ -11,7 +11,7 @@ class SentDocumentModelWrapper(ModelWrapper):
     querystring_attrs = ['doc_identifier']
     next_url_attrs = ['doc_identifier']
     next_url_name = settings.DASHBOARD_URL_NAMES.get(
-                                'other_documents_listboard_url')
+                                'sent_to_me_listboard_url')
 
     @property
     def sent_document_model_obj(self):
