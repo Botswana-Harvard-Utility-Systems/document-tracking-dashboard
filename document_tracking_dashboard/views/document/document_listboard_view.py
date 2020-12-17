@@ -7,6 +7,7 @@ from edc_dashboard.view_mixins import ListboardFilterViewMixin, SearchFormViewMi
 from edc_dashboard.views import ListboardView
 from edc_navbar import NavbarViewMixin
 
+from .filters import DocumentViewFilters
 from ...model_wrappers import DocumentModelWrapper
 
 
@@ -18,6 +19,7 @@ class DocumentListBoardView(
     listboard_url = 'document_listboard_url'
     listboard_panel_style = 'info'
     listboard_fa_icon = "fas fa-file"
+    listboard_view_filters = DocumentViewFilters()
 
     model = 'document_tracking.document'
     model_wrapper_cls = DocumentModelWrapper

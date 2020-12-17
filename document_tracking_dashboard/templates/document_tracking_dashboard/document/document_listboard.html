@@ -16,6 +16,7 @@
     <th></th>
     <th>Document Identifier</th>
     <th>Document Name</th>
+    <th>Document Type</th>
     <th>Document Form</th>
     <th>Document</th>
     <th>Last Modified</th>
@@ -39,6 +40,7 @@
 
     <td>{{ result.doc_identifier }} </td>
     <td nowrap>{{ result.document_name }}</td>
+    <td nowrap>{{ result.document_type }}</td>
     <td nowrap>{{ result.document_form }}</td>
     <td nowrap>{% if result.document_form != 'hard_copy' %}<a href="{{ result.object.file.url }}"  target="_blank">
                     Download Document</a>{% else %} Not Downloadable {% endif %}
