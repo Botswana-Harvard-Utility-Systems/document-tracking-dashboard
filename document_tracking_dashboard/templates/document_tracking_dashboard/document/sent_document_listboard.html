@@ -7,9 +7,6 @@
     &ensp;
 	Overall Documents <span class="float-right badge badge-light round">{{ all }}</span> &ensp;
 	Sent <span class="float-right badge badge-light round">{{ sent }}</span> &ensp;
-	Received <span class="float-right badge badge-light round">{{ received }}</span> &ensp;
-	Processed <span class="float-right badge badge-light round">{{ processing }}</span> &ensp;
-	Pending/Processing <span class="float-right badge badge-light round">{{ processed }}</span> &ensp;
 
 {% endblock listboard_panel %}
 
@@ -51,14 +48,14 @@
 
     <td>{{ result.doc_identifier }} </td>
     <td nowrap>{{ result.user_created }}</td>
-    <td nowrap>{{ result.object.send_to }}</td>
+    <td nowrap>{{ result.object.get_sent_to }}</td>
     <td nowrap>{{ result.status }}</td>
     <td nowrap>{{ result.action_priority }}</td>
     <td nowrap>{{ result.action_date }}</td>
-    <td nowrap><center>{% if result.object.final_destination != None %}
-        {{result.object.final_destination}} {% else %} - - - - {% endif %}</center></td>
-    <td nowrap><center>{% if result.object.receiver_at_destination != None %}
-        {{result.object.receiver_at_destination}} {% else %} - - - - {% endif %}</center></td>
+    <td nowrap><center>{% if result.object.get_final_dest != None %}
+        {{result.object.get_final_dest}} {% else %} - - - - {% endif %}</center></td>
+    <td nowrap><center>{% if result.object.get_final_dest_rec != None %}
+        {{result.object.get_final_dest_rec}} {% else %} - - - - {% endif %}</center></td>
     <td nowrap>{{ result.comment }}</td>
 
 {% endblock listboard_table_columns %}

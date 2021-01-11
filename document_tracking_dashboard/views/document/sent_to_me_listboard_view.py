@@ -9,6 +9,7 @@ from edc_dashboard.views import ListboardView
 from edc_navbar import NavbarViewMixin
 
 from document_tracking.models import SendDocument
+from .filters import SentDocumentViewFilters
 from ...model_wrappers import SentDocumentModelWrapper
 
 
@@ -28,6 +29,7 @@ class SentToMeListBoardView(
     ordering = '-modified'
     paginate_by = 10
     search_form_url = 'sent_to_me_listboard_url'
+    listboard_view_filters = SentDocumentViewFilters()
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):

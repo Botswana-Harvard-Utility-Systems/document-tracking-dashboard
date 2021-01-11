@@ -42,6 +42,8 @@ class SentListBoardView(
         context = super().get_context_data(**kwargs)
         doc_identifier = kwargs.get('doc_identifier', None)
 
+
+
         context.update(
             document=self.document(doc_identifier=doc_identifier),
             sent=SendDocument.objects.filter(
