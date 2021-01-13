@@ -18,7 +18,7 @@ class SentListBoardView(
 
     listboard_template = 'sent_document_listboard_template'
     listboard_url = 'sent_listboard_url'
-    listboard_panel_style = 'info'
+    listboard_panel_style = 'default'
     listboard_fa_icon = "fas fa-file"
 
     model = 'document_tracking.senddocument'
@@ -34,15 +34,13 @@ class SentListBoardView(
         return super().dispatch(*args, **kwargs)
 
     def document(self, doc_identifier=None):
-        """Reeturn a new contract obj.
+        """Returns a new sent document obj.
         """
         return SentDocumentModelWrapper(SendDocument(doc_identifier=doc_identifier))
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         doc_identifier = kwargs.get('doc_identifier', None)
-
-
 
         context.update(
             document=self.document(doc_identifier=doc_identifier),

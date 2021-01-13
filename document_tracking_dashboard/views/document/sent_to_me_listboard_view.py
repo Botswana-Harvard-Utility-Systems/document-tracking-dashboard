@@ -8,9 +8,17 @@ from edc_dashboard.view_mixins import ListboardFilterViewMixin, SearchFormViewMi
 from edc_dashboard.views import ListboardView
 from edc_navbar import NavbarViewMixin
 
+from django.http import HttpResponseRedirect
+from django.urls import reverse
+
 from document_tracking.models import SendDocument
+from document_tracking.forms import SendDocumentForm
 from .filters import SentDocumentViewFilters
 from ...model_wrappers import SentDocumentModelWrapper
+
+
+class SentToMeViewError(Exception):
+    pass
 
 
 class SentToMeListBoardView(
@@ -19,7 +27,7 @@ class SentToMeListBoardView(
 
     listboard_template = 'sent_to_me_listboard_template'
     listboard_url = 'sent_to_me_listboard_url'
-    listboard_panel_style = 'info'
+    listboard_panel_style = 'default'
     listboard_fa_icon = "fas fa-file"
 
     model = 'document_tracking.senddocument'
@@ -86,3 +94,44 @@ class SentToMeListBoardView(
         if re.match('^[A-Z]+$', search_term):
             q = Q(doc_identifier__exact=search_term)
         return q
+
+    def post(self, request, *args, **kwargs):
+
+        if request.method == 'POST':
+            identifier = request.POST.get('identifier')
+            if identifier:
+                SendDocument.objects.filter(
+                    doc_identifier=identifier).update(
+                    status='received',
+                    received_by=request.user.username)
+                print("Document set to received")
+            try:
+                url_name = request.url_name_data['sent_to_me_listboard_url']
+            except KeyError as e:
+                raise SentToMeViewError('Object not updated')
+            url = reverse(url_name)
+            return HttpResponseRedirect(url)
+
+
+
+
+
+        # send_document = SendDocumentForm(self.request.POST)
+        #
+        # identifier = send_document['identifier']
+        #
+        #
+        # return self.get(request, *args, **kwargs)
+        #
+
+# def receive_document(request):
+#     if request.method == 'POST':
+#         send_document = SendDocument(request.POST)
+#
+#         identifier = send_document.cleaned_data['identifier']
+#
+#         if identifier:
+#             SendDocument.objects.filter(
+#                 doc_identifier=identifier).update(
+#                 show=False, status='received')
+#         print("Updated")

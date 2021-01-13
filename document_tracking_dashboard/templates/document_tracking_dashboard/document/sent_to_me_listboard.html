@@ -30,13 +30,20 @@
     <td style="white-space: nowrap;">
     <div class="btn-group">
 
-     {% edit_document_button result %}
+    {% edit_document_button result %}
+    {% if result.status == 'sent' %}
+             <form method="post" action="{% url sent_to_me_listboard_url %}">
+              {% csrf_token %}
+                  <input type="hidden" name="identifier" value="{{ result.doc_identifier }}">
+                  <input type="submit" value="Receive Document" class="btn btn-warning btn-sm">
+            </form>
+    {% elif result.status == 'received' %}
+        {% forward_document_button result %}
 
-     {% forward_document_button result %}
-
-     <a id="btn-dashboard" class="btn btn-primary btn-sm" role="button"
-     title="add_dashboard" href="{% url document_dashboard_url result.doc_identifier %}">
-     <i class="fas fa-file"></i> Dashboard  <i class="fa fa-share"></i></a>
+         <a id="btn-dashboard" class="btn btn-primary btn-sm" role="button"
+         title="add_dashboard" href="{% url document_dashboard_url result.doc_identifier %}">
+         <i class="fas fa-file"></i> Dashboard  <i class="fa fa-share"></i></a>
+    {% endif %}
 
     </div>
     </td>
@@ -50,8 +57,8 @@
     <td nowrap>{{ result.status }}</td>
     <td nowrap>{{ result.action_priority }}</td>
     <td nowrap>{{ result.action_date }}</td>
-    <td nowrap><center>{% if result.object.receiver_at_destination != None %}
-        {{result.object.receiver_at_destination}} {% else %} - - - - {% endif %}</center></td>
+    <td nowrap>{% if result.object.get_final_dest_rec %}
+        {{result.object.get_final_dest_rec}} {% else %} - - - - {% endif %}</td>
     <td nowrap>{{ result.comment }}</td>
 
 {% endblock listboard_table_columns %}

@@ -50,7 +50,8 @@
 		        <td>{{sent_document.doc_identifier}}</td>
 		        <td>{{sent_document.user_created}}</td>
 		        <td>{{document.document_name}}</td>
-		        <td>{{sent_document.send_to}}</td>
+		        <td nowrap>{% if sent_document.get_sent_to %}
+        		{{sent_document.get_sent_to}}{% else %} - - - - {% endif %}</td>
 		        <td>{% if document.document_form != 'hard_copy' %}<a href="{{ document.file.url }}"  target="_blank">
                     Download Document</a>{% else %} Not Downloadable {% endif %}</td>
 		      </tr>
@@ -82,13 +83,13 @@
 	      <div class="panel-body">
 			<b>Document Name:</b> {{document.document_name}}, {{document.document_form}}</br>
 			<b>Sent by:</b> {{sent_document.user_created}}</br>
-			<b>Sent To:</b> {{sent_document.send_to}}</br>
-			<b>Final Doc Destination:</b>{% if sent_document.final_destination != None %}
-			  {{sent_document.final_destination}} {% else %} -- {% endif %}</br>
-			<b>Receiver At Destination:</b>{% if sent_document.receiver_at_destination != None %}
-			  {{sent_document.receiver_at_destination}} {% else %} -- {% endif %}</br>
+			<b>Sent To:</b> {{sent_document.get_sent_to}}</br>
+			<b>Final Doc Destination:</b>{% if sent_document.get_final_dest %}
+			  {{sent_document.get_final_dest}} {% else %} -- {% endif %}</br>
+			<b>Receiver At Destination:</b>{% if sent_document.get_final_dest_rec %}
+			  {{sent_document.get_final_dest_rec}} {% else %} -- {% endif %}</br>
 			<b>Status:</b> {{sent_document.status}}</br>
-			<b>Priority:</b> {{sent_document.action_priority}}</br>
+			<b>Priority:</b> {{sent_document.priority}}</br>
 			<b>Sent Date:</b> {{sent_document.action_date}}</br>
 	      </div>
 	    </div>

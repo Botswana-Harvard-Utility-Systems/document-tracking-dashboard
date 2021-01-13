@@ -48,13 +48,14 @@
 
     <td>{{ result.doc_identifier }} </td>
     <td nowrap>{{ result.user_created }}</td>
-    <td nowrap>{{ result.object.get_sent_to }}</td>
+    <td nowrap>{% if result.object.get_sent_to %}
+        {{result.object.get_sent_to}} {% else %} - - - - {% endif %}</td>
     <td nowrap>{{ result.status }}</td>
     <td nowrap>{{ result.action_priority }}</td>
     <td nowrap>{{ result.action_date }}</td>
-    <td nowrap><center>{% if result.object.get_final_dest != None %}
+    <td nowrap><center>{% if result.object.get_final_dest %}
         {{result.object.get_final_dest}} {% else %} - - - - {% endif %}</center></td>
-    <td nowrap><center>{% if result.object.get_final_dest_rec != None %}
+    <td nowrap><center>{% if result.object.get_final_dest_rec %}
         {{result.object.get_final_dest_rec}} {% else %} - - - - {% endif %}</center></td>
     <td nowrap>{{ result.comment }}</td>
 
