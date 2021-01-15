@@ -1,0 +1,51 @@
+{% extends "edc_dashboard/listboard.html" %}
+{% load admin_urls %}
+{% load edc_base_extras %}
+{% load document_dashboard_extras %}
+
+{% block listboard_panel %}
+&ensp;    <a id="return_to_home" title="go back" class="btn btn-sm btn-default" role="button"
+    href="{% url document_url %}">
+        <i class="fa fa-arrow-left fa-sm"></i> Go Back
+    </a>&nbsp;&nbsp;
+
+{% endblock listboard_panel %}
+
+{% block listboard_table_header %}
+    <!-- begin results header -->
+    <th>#</th>
+    <th></th>
+    <th>Sender</th>
+    <th>Status</th>
+    <th>Priority</th>
+    <th>Sent-Date</th>
+    <th>Groups</th>
+    <th>Comments</th>
+    <!-- end results header -->
+{% endblock listboard_table_header %}
+
+
+{% block listboard_table_button_column %}
+    <td style="white-space: nowrap;">
+    <div class="btn-group">
+
+         <a id="btn-dashboard" class="btn btn-primary btn-sm" role="button"
+         title="add_dashboard" href="{% url document_dashboard_url result.doc_identifier %}">
+         <i class="fas fa-file"></i> Dashboard  <i class="fa fa-share"></i></a>
+
+    </div>
+    </td>
+{% endblock listboard_table_button_column %}
+
+
+{% block listboard_table_columns %}
+
+    <td nowrap>{{ result.user_created }}</td>
+    <td nowrap>{{ result.status }}</td>
+    <td nowrap>{{ result.priority }}</td>
+    <td nowrap>{{ result.sent_date }}</td>
+    <td nowrap>{% if result.object.get_groups %}
+        {{result.object.get_groups}} {% else %} - - - - {% endif %}</td>
+    <td nowrap>{{ document.file.url }}</td>
+
+{% endblock listboard_table_columns %}
