@@ -18,8 +18,12 @@
     <br><br><br>
     <div class="box">
        <div class="icon"><i class="ion-ios-analytics-outline" style="color: #ff689b;"></i></div>
-       <p class="h4"><a href="{% url document_listboard_url %}" class="btn btn-default btn-lm"><i class="fa fa-file"></i>&nbsp;Documents</a></p>
+       <p class="h4"><a href="{% url document_listboard_url %}" class="btn btn-default btn-lm"><i class="fa fa-file"></i>&nbsp;Documents</a>&nbsp;
+       <a href="{% url shared_documents_listboard_url %}" class="btn btn-default btn-lm"><i class="fa fa-list"></i>&nbsp;Published&nbsp;Documents</a>&nbsp;
+       <a href="{% url hard_copy_document_listboard_url %}" class="btn btn-default btn-lm"><i class="fas fa-chevron-right"></i>&nbsp;Send/Track Hard-Copy Documents</a>
+       </p>
      </div>
+
         </div>
  </div>
 <br><br><br>

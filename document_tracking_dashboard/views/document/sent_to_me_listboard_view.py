@@ -51,6 +51,7 @@ class SentToMeListBoardView(
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         doc_identifier = kwargs.get('doc_identifier', None)
+        # import pdb; pdb.set_trace()
         context.update(
             doc_identifier=doc_identifier,
             document=self.document(doc_identifier=doc_identifier),
@@ -77,16 +78,8 @@ class SentToMeListBoardView(
             options.update(
                 {'doc_identifier': kwargs.get('doc_identifier')})
 
-        groups = request.user.groups.all()
-        groups_as_list = list(groups)
+        options.update({'send_to': request.user.id})
 
-        if groups_as_list:
-            for group_item in groups_as_list:
-
-                    options.update(
-                        {'group': group_item.id})
-        else:
-            options.update({'send_to': request.user.id})
         return options
 
     def extra_search_options(self, search_term):
@@ -111,27 +104,3 @@ class SentToMeListBoardView(
                 raise SentToMeViewError('Object not updated')
             url = reverse(url_name)
             return HttpResponseRedirect(url)
-
-
-
-
-
-        # send_document = SendDocumentForm(self.request.POST)
-        #
-        # identifier = send_document['identifier']
-        #
-        #
-        # return self.get(request, *args, **kwargs)
-        #
-
-# def receive_document(request):
-#     if request.method == 'POST':
-#         send_document = SendDocument(request.POST)
-#
-#         identifier = send_document.cleaned_data['identifier']
-#
-#         if identifier:
-#             SendDocument.objects.filter(
-#                 doc_identifier=identifier).update(
-#                 show=False, status='received')
-#         print("Updated")

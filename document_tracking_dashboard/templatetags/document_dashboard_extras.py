@@ -18,6 +18,13 @@ def send_button(model_wrapper):
         doc_identifier=model_wrapper.object.doc_identifier)
 
 
+@register.inclusion_tag('document_tracking_dashboard/buttons/send_hard_copy_button.html')
+def send_hard_copy_document_button(model_wrapper):
+    return dict(
+        send_hard_copy_document_href=model_wrapper.send_hard_copy_document.href,
+        doc_identifier=model_wrapper.object.doc_identifier)
+
+
 @register.inclusion_tag('document_tracking_dashboard/buttons/edit_document_button.html')
 def edit_document_button(model_wrapper):
     title = ['Edit document form.']

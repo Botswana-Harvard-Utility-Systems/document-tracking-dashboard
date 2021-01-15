@@ -42,6 +42,7 @@ class DocumentListBoardView(
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        # import pdb; pdb.set_trace()
         doc_identifier = kwargs.get('doc_identifier', None)
         context.update(
             soft_copy=Document.objects.filter(
@@ -70,6 +71,15 @@ class DocumentListBoardView(
                 {'doc_identifier': kwargs.get('doc_identifier')})
         options.update({'user_created': request.user.username})
         return options
+
+    def get_queryset(self):
+        qs = super().get_queryset()
+
+        criterion1 = Q(user_created=self.request.user.username)
+        criterion2 = Q(document_form='soft_copy')
+        qs = qs.filter(criterion1 & criterion2)
+
+        return qs
 
     def extra_search_options(self, search_term):
         q = Q()

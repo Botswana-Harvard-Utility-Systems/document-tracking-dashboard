@@ -24,9 +24,13 @@
 
     {% block listboard_panel %}
 
-       <a id="document_add" title="add document" class="btn btn-sm btn-default" role="button"
+    <a id="document_add" title="add document" class="btn btn-sm btn-default" role="button"
         href="{{ document_add_url }}?next={{ document_listboard_url }}">
             <i class="fa fa-plus fa-sm"></i> Add Document
+    </a>
+    <a id="return_to_home" title="go back" class="btn btn-sm btn-default" role="button"
+        href="{% url document_url %}">
+            <i class="fa fa-arrow-left fa-sm"></i> Go Back
     </a>
     {% endblock listboard_panel %}
 
@@ -69,7 +73,11 @@
 		{% block listboard_table_columns %}
         <td>{{ result.doc_identifier }} </td>
         <td nowrap>{{ result.document_name }}</td>
+            {% if document_type == "OTHER" %}
+        <td nowrap>{{ result.document_type_other }}</td>
+            {% endif %}
         <td nowrap>{{ result.document_type }}</td>
+
         <td nowrap>{{ result.document_form }}</td>
         <td nowrap>{% if result.document_form != 'hard_copy' %}<a href="{{ result.object.file.url }}"  target="_blank">
                         Download Document</a>{% else %} Not Downloadable {% endif %}

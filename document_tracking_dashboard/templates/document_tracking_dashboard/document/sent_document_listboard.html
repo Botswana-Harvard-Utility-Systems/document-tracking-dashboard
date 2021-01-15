@@ -4,9 +4,13 @@
 {% load document_dashboard_extras %}
 
 {% block listboard_panel %}
-    &ensp;
-	Overall Documents <span class="float-right badge badge-light round">{{ all }}</span> &ensp;
+&ensp;    <a id="return_to_home" title="go back" class="btn btn-sm btn-default" role="button"
+    href="{% url document_url %}">
+        <i class="fa fa-arrow-left fa-sm"></i> Go Back
+    </a>&nbsp;&nbsp;
+	All <span class="float-right badge badge-light round">{{ all }}</span> &ensp;
 	Sent <span class="float-right badge badge-light round">{{ sent }}</span> &ensp;
+	Received <span class="float-right badge badge-light round">{{ received }}</span> &ensp;
 
 {% endblock listboard_panel %}
 
@@ -51,8 +55,8 @@
     <td nowrap>{% if result.object.get_sent_to %}
         {{result.object.get_sent_to}} {% else %} - - - - {% endif %}</td>
     <td nowrap>{{ result.status }}</td>
-    <td nowrap>{{ result.action_priority }}</td>
-    <td nowrap>{{ result.action_date }}</td>
+    <td nowrap>{{ result.priority }}</td>
+    <td nowrap>{{ result.sent_date }}</td>
     <td nowrap><center>{% if result.object.get_final_dest %}
         {{result.object.get_final_dest}} {% else %} - - - - {% endif %}</center></td>
     <td nowrap><center>{% if result.object.get_final_dest_rec %}
