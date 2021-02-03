@@ -1,6 +1,7 @@
 from .document import DashboardView
 from .document import DocumentListBoardView
 from .document import HardCopyDocumentListBoardView
+from .document import ReceptionDocsListBoardView
 from .document import SendHardCopyListBoardView
 from .document import SentToMeListBoardView
 from .document import SentListBoardView

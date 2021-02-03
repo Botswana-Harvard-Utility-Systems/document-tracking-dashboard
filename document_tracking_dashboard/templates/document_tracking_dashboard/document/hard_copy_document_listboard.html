@@ -9,6 +9,16 @@
 <div id="div-home-right" class="col-md-9">
  <!-- start listboard main block-->
  <div class="panel-group">
+
+     <ul class="nav nav-tabs">
+  <li class="nav-item">
+    <a class="nav-link" href="{% url hard_copy_document_listboard_url %}">Add Hard Copies</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="{% url send_hard_copy_listboard_url %}">Receive Hard Copies</a>
+  </li>
+</ul>
+
   <div class="panel panel-{{ listboard_panel_style }}">
    <div class="panel-heading">
 

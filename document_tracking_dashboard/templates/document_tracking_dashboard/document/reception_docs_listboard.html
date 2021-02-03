@@ -1,0 +1,145 @@
+{% extends "edc_dashboard/listboard.html" %}
+{% load static %}
+{% load admin_urls %}
+{% load edc_base_extras %}
+{% load document_dashboard_extras %}
+
+{% block listboard_panel %}
+
+&ensp;    <a id="return_to_home" title="go back" class="btn btn-sm btn-default" role="button"
+    href="{% url document_url %}">
+        <i class="fa fa-arrow-left fa-sm"></i> Go Back
+    </a>&nbsp;&nbsp;
+	All <span class="float-right badge badge-light round">{{ all }}</span> &ensp;
+	Sent <span class="float-right badge badge-light round">{{ sent }}</span> &ensp;
+	Received <span class="float-right badge badge-light round">{{ received }}</span> &ensp;
+
+{% endblock listboard_panel %}
+
+{% block listboard_table_header %}
+    <!-- begin results header -->
+    <th>#</th>
+    <th></th>
+    <th>Document Identifier</th>
+    <th>Sender</th>
+    <th>Send-To</th>
+    <th>Department</th>
+    <th>Status</th>
+    <th>Sent-Date</th>
+    <th>Courier</th>
+    <th>Secondary Recep</th>
+    <th>Receptionist Recieved</th>
+    <th>User Received</th>
+    <!-- end results header -->
+{% endblock listboard_table_header %}
+
+
+{% block listboard_table_button_column %}
+    <td style="white-space: nowrap;">
+    <div class="btn-group">
+
+        {% if request.user|has_primary_recep:"BHP HQ" %}
+                {% if result.recep_received == '' %}
+
+        <form method="post" action="{% url reception_docs_listboard_url %}">
+              {% csrf_token %}
+                  <input type="hidden" name="identifier" value="{{ result.doc_identifier }}">
+                  <input type="hidden" name="update" value="receive_hq">
+                  <input type="submit" value="Receive Document" class="btn btn-warning btn-sm">
+        </form>
+
+                {% endif %}
+        {% endif %}
+
+
+        {% if request.user|has_secondary_recep:"Finance Reception" %}
+                {% if result.secondary_recep_received == '' %}
+
+        <form method="post" action="{% url reception_docs_listboard_url %}">
+              {% csrf_token %}
+                  <input type="hidden" name="identifier" value="{{ result.doc_identifier }}">
+                  <input type="hidden" name="update" value="receive">
+                  <input type="submit" value="Receive Document" class="btn btn-warning btn-sm">
+        </form>
+
+                {% endif %}
+        {% endif %}
+
+
+    </div>
+    </td>
+{% endblock listboard_table_button_column %}
+
+
+{% block listboard_table_columns %}
+
+    <td>{{ result.doc_identifier }} </td>
+    <td nowrap>{{ result.user_created }}</td>
+    <td nowrap>{% if result.object.send_to %}
+        {{result.object.send_to}} {% else %} - - - - {% endif %}</td>
+    <td nowrap>{{ result.object.department }}</td>
+    <td nowrap>{{ result.status }}</td>
+    <td nowrap>{{ result.sent_date }}</td>
+
+<form id="courier_nd_recep" method="post" action="{% url reception_docs_listboard_url %}">
+     {% csrf_token %}
+
+<td>
+    <input type="hidden" name="identifier" value="{{ result.doc_identifier }}">
+    <input type="hidden" name="update" value="update courier">
+
+{% if result.recep_received != '' %}
+    {% for group in request.user.groups.all %}
+        {% if group.name == result.object.reception.name %}
+                <select id="courier" name="courier">
+            {% if result.courier %}
+                <option value="{{ result.courier }}" selected>{{ result.courier }}</option>
+            {% else %}
+                <option value="">-----</option>
+            {% endif %}
+
+            {% for courier in couriers %}
+                <option value="{{ courier }}">{{ courier }}</option>
+            {% endfor %}
+                </select>
+        {% elif group.name != result.object.reception.name %}
+            {{ result.courier }}
+        {% endif %}
+        <input type="submit" value="Update" style="font-size: small; color: #003366;" class="">
+    {% endfor %}
+{% else %}
+    -----
+{% endif %}
+
+</td>
+
+
+<td>
+
+<!--{% for group in request.user.groups.all %}-->
+    <!--{% if group.name == result.object.reception.name %}-->
+            <!--<select id="reception" name="reception">-->
+        <!--{% if result.secondary_recep %}-->
+            <!--<option value="{{ result.secondary_recep }}" selected>{{ result.secondary_recep }}</option>-->
+        <!--{% else %}-->
+            <!--<option value="">&#45;&#45;&#45;&#45;</option>-->
+        <!--{% endif %}-->
+
+        <!--{% for reception in secondary_recep %}-->
+            <!--<option value="{{ reception }}">{{ reception }}</option>-->
+        <!--{% endfor %}-->
+            <!--</select>-->
+    <!--{% elif group.name != result.object.reception.name %}-->
+        <!--{{ result.secondary_recep }}-->
+    <!--{% endif %}-->
+<!--{% endfor %}-->
+
+
+</td>
+
+</form>
+
+    <td nowrap>{{ result.object.secondary_recep_received }}</td>
+    <td nowrap>{{ result.object.received_by }}</td>
+
+{% endblock listboard_table_columns %}

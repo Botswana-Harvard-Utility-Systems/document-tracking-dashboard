@@ -14,12 +14,6 @@ class SendHardCopyModelWrapper(ModelWrapper):
                                 'send_hard_copy_listboard_url')
 
     @property
-    def doc_identifier(self):
-        if self.send_hard_copy_model_obj:
-            return self.send_hard_copy_model_obj.doc_identifier
-        return None
-
-    @property
     def send_hard_copy_model_obj(self):
         """Returns a sent hard copy model instance or None.
         """
@@ -34,13 +28,12 @@ class SendHardCopyModelWrapper(ModelWrapper):
         return django_apps.get_model('document_tracking.sendhardcopy')
 
     @property
-    def create_send_hard_copy_options(self):
-        """Returns a dictionary of options to create a new
-        unpersisted send hard copy model instance.
+    def send_hard_copy_document(self):
+        """Returns a wrapped saved or unsaved subject screening.
         """
-        options = dict(
-            doc_identifier=self.object.doc_identifier)
-        return options
+        model_obj = self.send_hard_copy_cls(
+            **self.send_hard_copy_options)
+        return SendHardCopyModelWrapper(model_obj=model_obj)
 
     @property
     def send_hard_copy_options(self):

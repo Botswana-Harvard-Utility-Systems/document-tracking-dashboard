@@ -11,7 +11,7 @@ from edc_dashboard import UrlConfig
 from .patterns import doc_identifier
 from .views import (SentToMeListBoardView, SharedDocumentsListBoardView,
                     DashboardView, DocumentListBoardView, HomeView,
-                    HardCopyDocumentListBoardView,
+                    HardCopyDocumentListBoardView, ReceptionDocsListBoardView,
                     SendHardCopyListBoardView, SentListBoardView)
 
 app_name = 'document_tracking_dashboard'
@@ -44,6 +44,13 @@ send_hard_copy_listboard_url_config = UrlConfig(
     identifier_label='doc_identifier',
     identifier_pattern=doc_identifier)
 
+reception_docs_listboard_url_config = UrlConfig(
+    url_name='reception_docs_listboard_url',
+    view_class=ReceptionDocsListBoardView,
+    label='reception_docs_listboard',
+    identifier_label='doc_identifier',
+    identifier_pattern=doc_identifier)
+
 sent_to_me_listboard_urlconfig = UrlConfig(
     url_name='sent_to_me_listboard_url',
     view_class=SentToMeListBoardView,
@@ -72,6 +79,7 @@ urlpatterns += [path('document/', HomeView.as_view(), name='document_url')]
 urlpatterns += document_dashboard_url_config.dashboard_urls
 urlpatterns += document_listboard_url_config.listboard_urls
 urlpatterns += hard_copy_document_listboard_url_config.listboard_urls
+urlpatterns += reception_docs_listboard_url_config.listboard_urls
 urlpatterns += send_hard_copy_listboard_url_config.listboard_urls
 urlpatterns += sent_to_me_listboard_urlconfig.listboard_urls
 urlpatterns += sent_listboard_urlconfig.listboard_urls

@@ -4,6 +4,21 @@ from django.conf import settings
 register = template.Library()
 
 
+@register.filter(name='has_primary_recep')
+def has_primary_recep(user, group_name):
+    return user.groups.filter(name=group_name).exists()
+
+
+@register.filter(name='has_secondary_recep')
+def has_secondary_recep(user, group_name):
+    return user.groups.filter(name=group_name).exists()
+
+
+@register.filter(name='has_group')
+def has_group(user, group_name):
+    return user.groups.filter(name=group_name).exists()
+
+
 @register.inclusion_tag('document_tracking_dashboard/buttons/forward_document_button.html')
 def forward_document_button(model_wrapper):
     return dict(

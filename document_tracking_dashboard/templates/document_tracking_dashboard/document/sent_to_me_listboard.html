@@ -23,7 +23,7 @@
     <th>Status</th>
     <th>Priority</th>
     <th>Sent-Date</th>
-    <th>Receiver At Destination</th>
+    <th>Receiver By</th>
     <th>Comment</th>
     <!-- end results header -->
 {% endblock listboard_table_header %}
@@ -60,8 +60,8 @@
     <td nowrap>{{ result.status }}</td>
     <td nowrap>{{ result.priority }}</td>
     <td nowrap>{{ result.sent_date }}</td>
-    <td nowrap>{% if result.object.get_final_dest_rec %}
-        {{result.object.get_final_dest_rec}} {% else %} - - - - {% endif %}</td>
+    <td nowrap>{% if result.object.received_by %}
+        {{result.object.received_by}} {% else %} - - - - {% endif %}</td>
     <td nowrap>{{ result.comment }}</td>
 
 {% endblock listboard_table_columns %}
