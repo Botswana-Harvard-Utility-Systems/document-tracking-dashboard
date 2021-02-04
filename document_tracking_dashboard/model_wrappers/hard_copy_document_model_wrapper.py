@@ -5,9 +5,10 @@ from django.core.exceptions import ObjectDoesNotExist
 from edc_model_wrapper import ModelWrapper
 
 from .send_hard_copy_model_wrapper_mixin import SendHardCopyModelWrapperMixin
+from .document_model_wrapper_mixin import DocumentModelWrapperMixin
 
-
-class HardCopyDocumentModelWrapper(SendHardCopyModelWrapperMixin, ModelWrapper):
+class HardCopyDocumentModelWrapper(SendHardCopyModelWrapperMixin, DocumentModelWrapperMixin,
+                                   ModelWrapper):
 
     model = 'document_tracking.document'
     querystring_attrs = ['doc_identifier']

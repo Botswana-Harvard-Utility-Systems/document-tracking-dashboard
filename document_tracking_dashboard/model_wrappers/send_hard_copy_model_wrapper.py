@@ -3,15 +3,21 @@ from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
 
 from edc_model_wrapper import ModelWrapper
+from .document_model_wrapper_mixin import DocumentModelWrapperMixin
 
-
-class SendHardCopyModelWrapper(ModelWrapper):
+class SendHardCopyModelWrapper(DocumentModelWrapperMixin, ModelWrapper):
 
     model = 'document_tracking.sendhardcopy'
     querystring_attrs = ['doc_identifier']
     next_url_attrs = ['doc_identifier']
     next_url_name = settings.DASHBOARD_URL_NAMES.get(
                                 'send_hard_copy_listboard_url')
+
+    @property
+    def doc_obj(self):
+        if self.document_model_obj:
+            return self.document_model_obj
+        return None
 
     @property
     def send_hard_copy_model_obj(self):

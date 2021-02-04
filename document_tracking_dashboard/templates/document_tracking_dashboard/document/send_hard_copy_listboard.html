@@ -51,6 +51,9 @@
         <!-- begin results header -->
     <th>#</th>
     <th></th>
+    <th></th>
+    <th></th>
+    <th>Document Name</th>
     <th>Send-To</th>
     <th>Reception</th>
     <th>Receptionist Received</th>
@@ -74,7 +77,7 @@
          <td>{{ forloop.counter }}</td>
 		 {% block listboard_table_button_column %}
 
-                <td style="white-space: nowrap;">
+    <td style="white-space: nowrap;">
     <div class="btn-group">
 
         {% if result.courier == '' %}
@@ -110,8 +113,15 @@
                     {% endif %}
             {% endif %}
         {% endif %}
-
-        {% if result.secondary_recep_received != '' %}
+		
+		{% if not result.reception and not result.secondary_reception %}
+		   <form method="post" action="{% url send_hard_copy_listboard_url %}">
+             {% csrf_token %}
+                 <input type="hidden" name="identifier" value="{{ result.doc_identifier }}">
+                 <input type="submit" value="Receive Document" class="btn btn-warning btn-sm">
+           </form>
+        {% elif result.secondary_recep_received != '' %}
+        
             {% if result.object.send_to == request.user %}
                 {% if result.received_by == '' %}
                 <form method="post" action="{% url send_hard_copy_listboard_url %}">
@@ -132,6 +142,9 @@
 		 {% endblock listboard_table_button_column %}
 
 		{% block listboard_table_columns %}
+	<td nowrap> </td>
+	<td nowrap> </td>
+	<td nowrap> {{result.doc_obj.document_name}} </td>
     <td nowrap>{% if result.object.send_to %}
         {{result.object.send_to}} {% else %} - - - - {% endif %}</td>
     <td nowrap>{{ result.object.reception }}</td>

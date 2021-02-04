@@ -45,10 +45,9 @@
         <!-- begin results header -->
         <th>#</th>
         <th></th>
-        <th>Document Name</th>
+        <th>Download Document Name</th>
         <th>Document Type</th>
         <th>Document Form</th>
-        <th>Document</th>
         <!-- end results header -->
 	  {% endblock listboard_table_header %}
 
@@ -70,16 +69,15 @@
 		 {% endblock listboard_table_button_column %}
 
 		{% block listboard_table_columns %}
-        <td nowrap>{{ result.document_name }}</td>
-            {% if document_type == "OTHER" %}
-        <td nowrap>{{ result.document_type_other }}</td>
-            {% endif %}
-        <td nowrap>{{ result.document_type }}</td>
-
-        <td nowrap>{{ result.document_form }}</td>
         <td nowrap>{% if result.document_form != 'hard_copy' %}<a href="{{ result.object.file.url }}"  target="_blank">
-                        Download Document</a>{% else %} Not Downloadable {% endif %}
+         	{{result.document_name}} </a>{% else %} Not Downloadable {% endif %}
         </td>
+        {% if document_type == "OTHER" %}
+          <td nowrap>{{ result.document_type_other }}</td>
+        {% else %}
+          <td nowrap>{{ result.document_type }}</td>
+		{% endif %}
+        <td nowrap>{{ result.document_form }}</td>
 
 		{% endblock listboard_table_columns %}
 		</tr>

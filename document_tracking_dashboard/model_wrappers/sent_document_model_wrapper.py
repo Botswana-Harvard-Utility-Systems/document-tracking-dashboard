@@ -3,9 +3,10 @@ from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
 
 from edc_model_wrapper import ModelWrapper
+from .document_model_wrapper_mixin import DocumentModelWrapperMixin
 
 
-class SentDocumentModelWrapper(ModelWrapper):
+class SentDocumentModelWrapper(DocumentModelWrapperMixin, ModelWrapper):
 
     model = 'document_tracking.senddocument'
     querystring_attrs = ['doc_identifier']
@@ -14,9 +15,9 @@ class SentDocumentModelWrapper(ModelWrapper):
                                 'sent_listboard_url')
 
     @property
-    def doc_name(self):
-        if self.sent_document_model_obj:
-            return self.sent_document_model_obj.doc_identifier
+    def doc_obj(self):
+        if self.document_model_obj:
+            return self.document_model_obj
         return None
 
     @property

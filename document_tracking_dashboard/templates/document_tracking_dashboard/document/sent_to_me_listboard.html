@@ -18,6 +18,7 @@
     <!-- begin results header -->
     <th>#</th>
     <th></th>
+    <th>Download Document</th>
     <th>Sender</th>
     <th>Status</th>
     <th>Priority</th>
@@ -50,7 +51,10 @@
 
 
 {% block listboard_table_columns %}
-
+	
+	<td nowrap>{% if result.doc_obj.document_form != 'hard_copy' %}<a href="{{ result.doc_obj.file.url }}"  target="_blank">
+        {{result.doc_obj.document_name}} </a>{% else %} Not Downloadable {% endif %}
+    </td>
     <td nowrap>{{ result.user_created }}</td>
     {% if result.status == 'sent' %}
         <td nowrap>pending</td>
