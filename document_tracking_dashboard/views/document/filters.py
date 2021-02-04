@@ -41,27 +41,13 @@ class SentDocumentViewFilters(ListboardViewFilters):
         label='All',
         lookup={})
 
-    soft_copy = ListboardFilter(
-        label='Soft-Copies',
+    priority = ListboardFilter(
+        label='High Priority',
         position=10,
-        lookup={'group': 'soft_copy'},)
+        lookup={'priority': 'high'},)
 
-    hard_copy = ListboardFilter(
-        label='Hard-Copies',
-        position=11,
-        lookup={'document_form': 'hard_copy'},)
+    group = ListboardFilter(
+        position=15,
+        label='Group',
+        lookup={'group__name__icontains': 'group'})
 
-    contract = ListboardFilter(
-        label='Contracts',
-        position=12,
-        lookup={'document_type': 'contract'},)
-
-    letter = ListboardFilter(
-        position=13,
-        label='Letters',
-        lookup={'document_type': 'letter'})
-
-    report = ListboardFilter(
-        position=14,
-        label='Reports',
-        lookup={'document_type': 'report'},)
