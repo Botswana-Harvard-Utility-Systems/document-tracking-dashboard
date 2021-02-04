@@ -9,6 +9,7 @@ from edc_navbar import NavbarViewMixin
 
 from document_tracking.models import SendDocument
 
+from .filters import SentDocumentViewFilters
 from ...model_wrappers import SentDocumentModelWrapper
 
 
@@ -20,6 +21,7 @@ class SentListBoardView(
     listboard_url = 'sent_listboard_url'
     listboard_panel_style = 'default'
     listboard_fa_icon = "fas fa-file"
+    listboard_view_filters = SentDocumentViewFilters()
 
     model = 'document_tracking.senddocument'
     model_wrapper_cls = SentDocumentModelWrapper
@@ -62,11 +64,26 @@ class SentListBoardView(
         )
         return context
 
+    def get_queryset(self):
+        qs = None
+        if self.request.GET.get('f') == 'group':
+            usr_groups = [g.name for g in self.request.user.groups.all()]
+            q = Q()
+            for group in usr_groups:
+                q |= Q(group__name__icontains=group)
+            qs = self.model_cls.objects.filter(q)
+        else:
+            qs = super().get_queryset()
+        return qs
+
     def get_queryset_filter_options(self, request, *args, **kwargs):
         options = super().get_queryset_filter_options(request, *args, **kwargs)
         if kwargs.get('doc_identifier'):
             options.update(
                 {'doc_identifier': kwargs.get('doc_identifier')})
+        group_filter = options.get('group__name__icontains', '')
+        if group_filter:
+            options = {key: val for key, val in options.items() if key != 'group__name__icontains'}
         options.update({'user_created': request.user.username})
         return options
 
