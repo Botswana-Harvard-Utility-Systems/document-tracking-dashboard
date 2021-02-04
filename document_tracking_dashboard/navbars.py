@@ -10,7 +10,7 @@ document_tracking_dashboard.append_item(
     NavbarItem(
         name='documents',
         title='Documents',
-        label='Documents',
+        label='Soft-Copy Documents',
         fa_icon='far fa-file',
         url_name=settings.DASHBOARD_URL_NAMES[
             'document_listboard_url'],
@@ -20,7 +20,7 @@ document_tracking_dashboard.append_item(
     NavbarItem(
         name='sent_documents',
         title='Sent Documents',
-        label='Sent Documents',
+        label='Sent Soft-Copies',
         fa_icon='fa fa-list-alt fa-sm',
         url_name=settings.DASHBOARD_URL_NAMES[
             'sent_listboard_url'],
@@ -30,7 +30,7 @@ document_tracking_dashboard.append_item(
     NavbarItem(
         name='documents_sent_to_me',
         title='Documents Sent To Me',
-        label='Documents Sent To Me',
+        label='Soft-Copies Sent To Me',
         fa_icon='fas fa-inbox',
         url_name=settings.DASHBOARD_URL_NAMES[
             'sent_to_me_listboard_url'],
