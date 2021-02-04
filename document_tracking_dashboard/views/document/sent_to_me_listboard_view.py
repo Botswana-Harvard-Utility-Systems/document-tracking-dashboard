@@ -98,11 +98,12 @@ class SentToMeListBoardView(
             qs = qs.filter(criterion2 | criterion3)
             return qs
 
-        # criterion1 = Q(reception__in=self.request.user.groups.all())
-        # criterion2 = Q(secondary_recep__in=self.request.user.groups.all())
-        # criterion3 = Q(sent_to=self.request.user)
-        # criterion4 = Q(user_created=self.request.user.username)
-        # qs = qs.filter(criterion1 or criterion2 or criterion3 or criterion4)
+        elif self.request.user.groups.filter(name='BHP HQ').exists():
+            # criterion1 = Q(department__in=self.request.user.department.all())
+            criterion2 = Q(send_to__id__icontains=self.request.user.id)
+            criterion3 = Q(group__in=self.request.user.groups.all())
+            qs = qs.filter(criterion2 | criterion3)
+            return qs
 
         return qs
 
