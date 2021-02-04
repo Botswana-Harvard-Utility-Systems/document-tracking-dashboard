@@ -190,6 +190,19 @@ class ReceptionDocsListBoardView(
                 url = reverse(url_name)
                 return HttpResponseRedirect(url)
 
+            if update and update == 'hand_over':
+                SendHardCopy.objects.filter(
+                    doc_identifier=identifier).update(
+                    handed_over=True)
+                print("Document received at Secondary Reception")
+                try:
+                    url_name = request.url_name_data[
+                        'reception_docs_listboard_url']
+                except KeyError as e:
+                    raise ReceptionDocsViewError('Object not updated')
+                url = reverse(url_name)
+                return HttpResponseRedirect(url)
+
         #
         # if request.user.groups.filter(name='Finance Reception').exists():
         #     if request.method == 'POST':
