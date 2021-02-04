@@ -114,13 +114,7 @@
             {% endif %}
         {% endif %}
 		
-		{% if not result.reception and not result.secondary_reception %}
-		   <form method="post" action="{% url send_hard_copy_listboard_url %}">
-             {% csrf_token %}
-                 <input type="hidden" name="identifier" value="{{ result.doc_identifier }}">
-                 <input type="submit" value="Receive Document" class="btn btn-warning btn-sm">
-           </form>
-        {% elif result.secondary_recep_received != '' %}
+        {% if result.secondary_recep_received != '' %}
         
             {% if result.object.send_to == request.user %}
                 {% if result.received_by == '' %}
