@@ -20,6 +20,7 @@
     <!-- begin results header -->
     <th>#</th>
     <th></th>
+    <th>Document Name</th>
     <th>Sender</th>
     <th>Send-To</th>
     <th>Department</th>
@@ -71,7 +72,8 @@
 
 
 {% block listboard_table_columns %}
-
+	
+	<td nowrap>{{ result.doc_obj.document_name }}</td>
     <td nowrap>{{ result.user_created }}</td>
     <td nowrap>{% if result.object.send_to %}
         {{result.object.send_to}} {% else %} - - - - {% endif %}</td>
