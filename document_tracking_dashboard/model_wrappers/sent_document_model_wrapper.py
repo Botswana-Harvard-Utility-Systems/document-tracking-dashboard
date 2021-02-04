@@ -14,6 +14,12 @@ class SentDocumentModelWrapper(ModelWrapper):
                                 'sent_listboard_url')
 
     @property
+    def doc_name(self):
+        if self.sent_document_model_obj:
+            return self.sent_document_model_obj.doc_identifier
+        return None
+
+    @property
     def sent_document_model_obj(self):
         """Returns a sent document model instance or None.
         """

@@ -37,7 +37,7 @@ class SentToMeListBoardView(
     ordering = '-modified'
     paginate_by = 10
     search_form_url = 'sent_to_me_listboard_url'
-    listboard_view_filters = SentDocumentViewFilters()
+    # listboard_view_filters = SentDocumentViewFilters()
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
@@ -72,21 +72,39 @@ class SentToMeListBoardView(
         )
         return context
 
-    def get_queryset_filter_options(self, request, *args, **kwargs):
-        options = super().get_queryset_filter_options(request, *args, **kwargs)
-        if kwargs.get('doc_identifier'):
-            options.update(
-                {'doc_identifier': kwargs.get('doc_identifier')})
-
-        options.update({'send_to': request.user.id})
-
-        return options
+    # def get_queryset_filter_options(self, request, *args, **kwargs):
+    #     options = super().get_queryset_filter_options(request, *args, **kwargs)
+    #     if kwargs.get('doc_identifier'):
+    #         options.update(
+    #             {'doc_identifier': kwargs.get('doc_identifier')})
+    #
+    #     options.update()
+    #
+    #     return options
 
     def extra_search_options(self, search_term):
         q = Q()
         if re.match('^[A-Z]+$', search_term):
             q = Q(doc_identifier__exact=search_term)
         return q
+
+    def get_queryset(self):
+        qs = super().get_queryset()
+
+        if self.request.user.groups.filter(name='BHP HQ').exists():
+            # criterion1 = Q(department__in=self.request.user.department.all())
+            criterion2 = Q(send_to__id__icontains=self.request.user.id)
+            criterion3 = Q(group__in=self.request.user.groups.all())
+            qs = qs.filter(criterion2 | criterion3)
+            return qs
+
+        # criterion1 = Q(reception__in=self.request.user.groups.all())
+        # criterion2 = Q(secondary_recep__in=self.request.user.groups.all())
+        # criterion3 = Q(sent_to=self.request.user)
+        # criterion4 = Q(user_created=self.request.user.username)
+        # qs = qs.filter(criterion1 or criterion2 or criterion3 or criterion4)
+
+        return qs
 
     def post(self, request, *args, **kwargs):
 

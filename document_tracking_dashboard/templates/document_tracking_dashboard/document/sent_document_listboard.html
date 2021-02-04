@@ -9,8 +9,8 @@
         <i class="fa fa-arrow-left fa-sm"></i> Go Back
     </a>&nbsp;&nbsp;
 	All <span class="float-right badge badge-light round">{{ all }}</span> &ensp;
-	Sent <span class="float-right badge badge-light round">{{ sent }}</span> &ensp;
-	Received <span class="float-right badge badge-light round">{{ received }}</span> &ensp;
+	Pending <span class="float-right badge badge-light round">{{ sent }}</span> &ensp;
+	Successfully Sent <span class="float-right badge badge-light round">{{ received }}</span> &ensp;
 
 {% endblock listboard_panel %}
 
@@ -18,15 +18,13 @@
     <!-- begin results header -->
     <th>#</th>
     <th></th>
-    <th>Document Identifier</th>
-    <th>Sender</th>
-    <th>Send-To</th>
+    <th>Sent-To</th>
+    <th>Departments Sent To</th>
     <th>Status</th>
     <th>Priority</th>
     <th>Sent-Date</th>
-    <th>Final Destination</th>
-    <th>Receiver At Destination</th>
-    <th>Comment</th>
+    <th>Receiver By</th>
+    <th>Comments</th>
     <!-- end results header -->
 {% endblock listboard_table_header %}
 
@@ -35,13 +33,7 @@
     <td style="white-space: nowrap;">
     <div class="btn-group">
 
-     {% edit_document_button result %}
-
-     {% forward_document_button result %}
-
-     <a id="btn-dashboard" class="btn btn-primary btn-sm" role="button"
-     title="add_dashboard" href="{% url document_dashboard_url result.doc_identifier %}">
-     <i class="fas fa-file"></i> Dashboard  <i class="fa fa-share"></i></a>
+     {% sent_document_button result %}
 
     </div>
     </td>
@@ -49,18 +41,21 @@
 
 
 {% block listboard_table_columns %}
-
-    <td>{{ result.doc_identifier }} </td>
-    <td nowrap>{{ result.user_created }}</td>
     <td nowrap>{% if result.object.get_sent_to %}
-        {{result.object.get_sent_to}} {% else %} - - - - {% endif %}</td>
+    {{result.object.get_sent_to}} {% else %} - - - - {% endif %}</td>
+    <td nowrap>{% if result.object.get_dept %}
+    {{result.object.get_dept}} {% else %} - - - - {% endif %}</td>
+    {% if result.status == 'sent' %}
+        <td nowrap>pending</td>
+    {% elif result.status == 'received' %}
+        <td nowrap>successfully sent</td>
+    {% else %}
     <td nowrap>{{ result.status }}</td>
+    {% endif %}
     <td nowrap>{{ result.priority }}</td>
     <td nowrap>{{ result.sent_date }}</td>
-    <td nowrap><center>{% if result.object.get_final_dest %}
-        {{result.object.get_final_dest}} {% else %} - - - - {% endif %}</center></td>
-    <td nowrap><center>{% if result.object.get_final_dest_rec %}
-        {{result.object.get_final_dest_rec}} {% else %} - - - - {% endif %}</center></td>
+    <td nowrap>{% if result.object.received_by %}
+        {{result.object.received_by}} {% else %} - - - - {% endif %}</td>
     <td nowrap>{{ result.comment }}</td>
 
 {% endblock listboard_table_columns %}

@@ -45,7 +45,6 @@
         <!-- begin results header -->
         <th>#</th>
         <th></th>
-        <th>Document Identifier</th>
         <th>Document Name</th>
         <th>Document Type</th>
         <th>Document Form</th>
@@ -71,7 +70,6 @@
 		 {% endblock listboard_table_button_column %}
 
 		{% block listboard_table_columns %}
-        <td>{{ result.doc_identifier }} </td>
         <td nowrap>{{ result.document_name }}</td>
             {% if document_type == "OTHER" %}
         <td nowrap>{{ result.document_type_other }}</td>

@@ -10,10 +10,15 @@ from .sent_document_model_wrapper_mixin import SentDocumentModelWrapperMixin
 class DocumentModelWrapper(SentDocumentModelWrapperMixin, ModelWrapper):
 
     model = 'document_tracking.document'
-    querystring_attrs = ['doc_identifier']
-    next_url_attrs = ['doc_identifier']
+    querystring_attrs = ['doc_identifier', 'document_form']
+    next_url_attrs = ['doc_identifier', 'document_form']
     next_url_name = settings.DASHBOARD_URL_NAMES.get(
                                 'document_listboard_url')
+
+    @property
+    def document_form(self):
+        document_form = 'Soft-Copy'
+        return document_form
 
     @property
     def doc_identifier(self):
@@ -32,6 +37,14 @@ class DocumentModelWrapper(SentDocumentModelWrapperMixin, ModelWrapper):
             return None
 
     @property
+    def document(self):
+        """Returns a wrapped saved or unsaved document.
+        """
+        model_obj = self.document_cls(
+            **self.document_options)
+        return DocumentModelWrapper(document_model_obj=model_obj)
+
+    @property
     def document_cls(self):
         return django_apps.get_model('document_tracking.document')
 
@@ -41,6 +54,7 @@ class DocumentModelWrapper(SentDocumentModelWrapperMixin, ModelWrapper):
         unpersisted document model instance.
         """
         options = dict(
+            document_form=self.object.document_form,
             doc_identifier=self.object.doc_identifier)
         return options
 
@@ -50,5 +64,6 @@ class DocumentModelWrapper(SentDocumentModelWrapperMixin, ModelWrapper):
         document model instance.
         """
         options = dict(
+            document_form=self.object.document_form,
             doc_identifier=self.object.doc_identifier)
         return options

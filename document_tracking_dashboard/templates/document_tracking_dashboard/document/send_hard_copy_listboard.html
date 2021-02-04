@@ -18,7 +18,6 @@
     <!-- begin results header -->
     <th>#</th>
     <th></th>
-    <th>Document Identifier</th>
     <th>Sender</th>
     <th>Send-To</th>
     <th>Reception</th>
@@ -30,7 +29,7 @@
     <th>Secondary Recep</th>
     <th>Receptionist</th>
     <th>Received By</th>
-    <th>Comment</th>
+    <th>Comments</th>
     <!-- end results header -->
 {% endblock listboard_table_header %}
 
@@ -95,7 +94,6 @@
 
 {% block listboard_table_columns %}
 
-    <td>{{ result.doc_identifier }} </td>
     <td nowrap>{{ result.user_created }}</td>
     <td nowrap>{% if result.object.send_to %}
         {{result.object.send_to}} {% else %} - - - - {% endif %}</td>
