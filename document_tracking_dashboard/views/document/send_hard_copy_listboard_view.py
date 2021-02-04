@@ -31,7 +31,7 @@ class SendHardCopyListBoardView(
     model = 'document_tracking.sendhardcopy'
     model_wrapper_cls = SendHardCopyModelWrapper
     navbar_name = 'document_tracking_dashboard'
-    navbar_selected_item = 'sent_documents'
+    navbar_selected_item = ''
     ordering = '-modified'
     paginate_by = 10
     search_form_url = 'send_hard_copy_listboard_url'

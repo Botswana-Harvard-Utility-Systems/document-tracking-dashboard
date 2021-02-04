@@ -24,7 +24,6 @@
     <th>Priority</th>
     <th>Sent-Date</th>
     <th>Receiver By</th>
-    <th>Comments</th>
     <!-- end results header -->
 {% endblock listboard_table_header %}
 
@@ -67,6 +66,5 @@
     <td nowrap>{{ result.sent_date }}</td>
     <td nowrap>{% if result.object.received_by %}
         {{result.object.received_by}} {% else %} - - - - {% endif %}</td>
-    <td nowrap>{{ result.comment }}</td>
 
 {% endblock listboard_table_columns %}

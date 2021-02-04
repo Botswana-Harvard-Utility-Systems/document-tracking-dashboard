@@ -25,7 +25,7 @@ class HardCopyDocumentListBoardView(
     model = 'document_tracking.document'
     model_wrapper_cls = HardCopyDocumentModelWrapper
     navbar_name = 'document_tracking_dashboard'
-    navbar_selected_item = 'documents'
+    navbar_selected_item = ''
     ordering = '-modified'
     paginate_by = 10
     search_form_url = 'hard_copy_document_listboard_url'

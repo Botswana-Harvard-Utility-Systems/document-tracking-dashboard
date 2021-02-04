@@ -33,7 +33,7 @@ class ReceptionDocsListBoardView(
     model = 'document_tracking.sendhardcopy'
     model_wrapper_cls = SendHardCopyModelWrapper
     navbar_name = 'document_tracking_dashboard'
-    navbar_selected_item = 'sent_documents'
+    navbar_selected_item = ''
     ordering = '-modified'
     paginate_by = 10
     search_form_url = 'reception_docs_listboard_url'
@@ -149,6 +149,8 @@ class ReceptionDocsListBoardView(
             identifier = request.POST.get('identifier')
             courier = request.POST.get('courier')
 
+
+
             if update and update == 'update courier':
                 SendHardCopy.objects.filter(
                     doc_identifier=identifier).update(
@@ -175,18 +177,18 @@ class ReceptionDocsListBoardView(
                 url = reverse(url_name)
                 return HttpResponseRedirect(url)
 
-            # if update and update == 'receive_finance':
-            #     SendHardCopy.objects.filter(
-            #         doc_identifier=identifier).update(
-            #         recep_received=request.user.username)
-            #     print("Document received at Primary Reception")
-            #     try:
-            #         url_name = request.url_name_data[
-            #             'reception_docs_listboard_url']
-            #     except KeyError as e:
-            #         raise ReceptionDocsViewError('Object not updated')
-            #     url = reverse(url_name)
-            #     return HttpResponseRedirect(url)
+            if update and update == 'receive_finance':
+                SendHardCopy.objects.filter(
+                    doc_identifier=identifier).update(
+                    secondary_recep_received=request.user.username)
+                print("Document received at Secondary Reception")
+                try:
+                    url_name = request.url_name_data[
+                        'reception_docs_listboard_url']
+                except KeyError as e:
+                    raise ReceptionDocsViewError('Object not updated')
+                url = reverse(url_name)
+                return HttpResponseRedirect(url)
 
         #
         # if request.user.groups.filter(name='Finance Reception').exists():

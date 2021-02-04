@@ -63,7 +63,6 @@
     <th>Courier</th>
     <th>Destination Reception</th>
     <th>Received By</th>
-    <th>Comments</th>
         <!-- end results header -->
 	  {% endblock listboard_table_header %}
 
@@ -123,8 +122,7 @@
                           <input type="hidden" name="identifier" value="{{ result.doc_identifier }}">
                           <input type="submit" value="Receive Document" class="btn btn-warning btn-sm">
                 </form>
-                {% else %}
-                    {% edit_document_button result %}
+
                 {%endif  %}
 
             {% endif %}
@@ -163,7 +161,6 @@
         {% endif %}
     <td nowrap>{{ result.object.secondary_recep }}</td>
     <td nowrap>{{ result.object.received_by }}</td>
-    <td nowrap>{{ result.comment }}</td>
 
 		{% endblock listboard_table_columns %}
 		</tr>
