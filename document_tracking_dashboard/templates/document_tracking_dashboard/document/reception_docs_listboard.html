@@ -125,10 +125,12 @@
         Document Handed Over
 {% else %}
     <form method="post" action="{% url reception_docs_listboard_url %}">
-                  {% csrf_token %}
-                      <input type="hidden" name="identifier" value="{{ result.doc_identifier }}">
-                      <input type="hidden" name="update" value="hand_over">
-        <i class="far fa-handshake fa-lg fa-fw"></i> <input type="submit" value="Hand-Over" class="btn btn-warning btn-sm">
+      {% csrf_token %}
+          <input type="hidden" name="identifier" value="{{ result.doc_identifier }}">
+          <input type="hidden" name="update" value="hand_over">
+
+        <!--<i class="far fa-handshake fa-lg fa-fw"></i> -->
+        <input type="submit" value="Hand-Over" class="btn btn-warning btn-sm">
     </form>
 {% endif %}
 </td>
