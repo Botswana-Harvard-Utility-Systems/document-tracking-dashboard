@@ -51,3 +51,35 @@ class SentDocumentViewFilters(ListboardViewFilters):
         label='Group',
         lookup={'group__name__icontains': 'group'})
 
+
+class ReceptionViewFilters(ListboardViewFilters):
+
+    all = ListboardFilter(
+        name='all',
+        label='All',
+        lookup={})
+
+    received_pri_recep = ListboardFilter(
+        label='Received: Primary Reception',
+        position=10,
+        lookup={'status': 'Received at primary Reception'}, )
+
+    in_transit = ListboardFilter(
+        label='In transit',
+        position=10,
+        lookup={'status': 'In transit'},)
+
+    received_sec_recep = ListboardFilter(
+        label='Received: Destination Reception',
+        position=11,
+        lookup={'status': 'Received at Destination Reception'}, )
+
+    handed_over = ListboardFilter(
+        label='Handed Over',
+        position=12,
+        lookup={'handed_over': True}, )
+
+    received = ListboardFilter(
+        label='User Received',
+        position=13,
+        lookup={'status': 'Received'}, )

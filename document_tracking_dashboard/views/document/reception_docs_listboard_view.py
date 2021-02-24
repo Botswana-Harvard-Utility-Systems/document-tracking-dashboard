@@ -14,6 +14,7 @@ from edc_navbar import NavbarViewMixin
 from document_tracking.models import Courier, SendHardCopy
 from document_tracking.forms import CourierForm
 
+from .filters import ReceptionViewFilters
 from ...model_wrappers import SendHardCopyModelWrapper
 
 
@@ -31,6 +32,7 @@ class ReceptionDocsListBoardView(
     listboard_fa_icon = "fas fa-file"
 
     model = 'document_tracking.sendhardcopy'
+    listboard_view_filters = ReceptionViewFilters()
     model_wrapper_cls = SendHardCopyModelWrapper
     navbar_name = 'document_tracking_dashboard'
     navbar_selected_item = ''
@@ -84,34 +86,7 @@ class ReceptionDocsListBoardView(
 
         options.update()
 
-        # if request.user.groups.filter(name='BHP HQ').exists():
-        #     options.update({'reception__name': 'BHP HQ'})
-        #     return options
-        #
-        # elif request.user.groups.filter(name='Finance Reception').exists():
-        #     options.update({'secondary_recep__name': 'Finance Reception'})
-        #     # options.update({'reception__name': 'Finance Reception'})
-        #     return options
-
         return options
-
-
-    # def get_queryset_filter_options(self, request, *args, **kwargs):
-    #     options = super().get_queryset_filter_options(request, *args, **kwargs)
-    #     if kwargs.get('doc_identifier'):
-    #
-    #         options.update(
-    #             {'doc_identifier': kwargs.get('doc_identifier')})
-    #     try:
-    #         if request.user.groups.filter(name='BHP HQ').exists():
-    #             options.update({'reception__name': 'BHP HQ'})
-    #
-    #         elif request.user.groups.filter(name='Finance Reception').exists():
-    #             options.update({'secondary_recep__name': 'Finance Reception'})
-    #
-    #     except TypeError as err:
-    #         print(err.args)
-
 
     def get_queryset(self):
         qs = super().get_queryset()
@@ -149,12 +124,11 @@ class ReceptionDocsListBoardView(
             identifier = request.POST.get('identifier')
             courier = request.POST.get('courier')
 
-
-
-            if update and update == 'update courier':
+            if update and (update == 'update courier' and courier != ''):
                 SendHardCopy.objects.filter(
                     doc_identifier=identifier).update(
-                    courier=courier)
+                    courier=courier,
+                    status='In transit')
                 print("Reception updated")
                 try:
                     url_name = request.url_name_data[
@@ -164,10 +138,11 @@ class ReceptionDocsListBoardView(
                 url = reverse(url_name)
                 return HttpResponseRedirect(url)
 
-            if update and update == 'receive_hq':
+            if update and update == 'received_at_primary':
                 SendHardCopy.objects.filter(
                     doc_identifier=identifier).update(
-                    recep_received=request.user.username)
+                    recep_received=request.user.username,
+                    status='Received at primary Reception')
                 print("Document received at Primary Reception")
                 try:
                     url_name = request.url_name_data[
@@ -177,10 +152,11 @@ class ReceptionDocsListBoardView(
                 url = reverse(url_name)
                 return HttpResponseRedirect(url)
 
-            if update and update == 'receive_finance':
+            if update and update == 'received_at_secondary':
                 SendHardCopy.objects.filter(
                     doc_identifier=identifier).update(
-                    secondary_recep_received=request.user.username)
+                    secondary_recep_received=request.user.username,
+                    status='Received at Destination Reception')
                 print("Document received at Secondary Reception")
                 try:
                     url_name = request.url_name_data[
@@ -194,7 +170,6 @@ class ReceptionDocsListBoardView(
                 SendHardCopy.objects.filter(
                     doc_identifier=identifier).update(
                     handed_over=True)
-                print("Document received at Secondary Reception")
                 try:
                     url_name = request.url_name_data[
                         'reception_docs_listboard_url']
@@ -203,19 +178,7 @@ class ReceptionDocsListBoardView(
                 url = reverse(url_name)
                 return HttpResponseRedirect(url)
 
-        #
-        # if request.user.groups.filter(name='Finance Reception').exists():
-        #     if request.method == 'POST':
-        #         identifier = request.POST.get('identifier')
-        #         if identifier:
-        #             SendHardCopy.objects.filter(
-        #                 doc_identifier=identifier).update(
-        #                 secondary_recep_received=request.user.username)
-        #             print("Document received at Secondary Reception")
-        #         try:
-        #             url_name = request.url_name_data[
-        #                 'reception_docs_listboard_url']
-        #         except KeyError as e:
-        #             raise ReceptionDocsViewError('Object not updated')
-        #         url = reverse(url_name)
-        #         return HttpResponseRedirect(url)
+        url_name = request.url_name_data[
+            'reception_docs_listboard_url']
+        url = reverse(url_name)
+        return HttpResponseRedirect(url)

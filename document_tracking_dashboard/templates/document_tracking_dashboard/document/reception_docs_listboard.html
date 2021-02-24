@@ -44,7 +44,7 @@
         <form method="post" action="{% url reception_docs_listboard_url %}">
               {% csrf_token %}
                   <input type="hidden" name="identifier" value="{{ result.doc_identifier }}">
-                  <input type="hidden" name="update" value="receive_hq">
+                  <input type="hidden" name="update" value="received_at_primary">
                   <input type="submit" value="Receive Document" class="btn btn-warning btn-sm">
         </form>
 
@@ -58,7 +58,7 @@
         <form method="post" action="{% url reception_docs_listboard_url %}">
               {% csrf_token %}
                   <input type="hidden" name="identifier" value="{{ result.doc_identifier }}">
-                  <input type="hidden" name="update" value="receive_finance">
+                  <input type="hidden" name="update" value="received_at_secondary">
                   <input type="submit" value="Receive Document" class="btn btn-warning btn-sm">
         </form>
 
@@ -110,10 +110,11 @@
                 </select>
                     <input type="submit" value="Update" style="font-size: small; color: #003366;" class="">
         {% elif group.name != result.object.reception.name %}
-            {{ result.courier }}
     {% endif %}
 
     {% endfor %}
+{% elif result.recep_received %}
+    {{ result.courier }}
 {% else %}
     -----
 {% endif %}
@@ -123,6 +124,8 @@
 <td>
 {% if result.handed_over %}
         Document Handed Over
+{% elif not result.secondary_recep_received %}
+
 {% else %}
     <form method="post" action="{% url reception_docs_listboard_url %}">
       {% csrf_token %}

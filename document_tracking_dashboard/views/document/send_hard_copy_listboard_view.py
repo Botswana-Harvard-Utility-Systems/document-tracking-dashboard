@@ -147,7 +147,7 @@ class SendHardCopyListBoardView(
                 if identifier:
                     SendHardCopy.objects.filter(
                         doc_identifier=identifier).update(
-                        received_by=request.user.username)
+                        received_by=request.user.username, status='Received')
                     print("Document received")
                 try:
                     url_name = request.url_name_data[
