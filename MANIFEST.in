@@ -1,1 +1,3 @@
+include AUTHORS CHANGES README.md LICENCE
 recursive-include document_tracking_dashboard/templates *
+recursive-include document_tracking_dashboard/static *
