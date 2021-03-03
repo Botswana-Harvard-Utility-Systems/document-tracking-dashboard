@@ -7,8 +7,9 @@ from edc_model_wrapper import ModelWrapper
 from .send_hard_copy_model_wrapper_mixin import SendHardCopyModelWrapperMixin
 from .document_model_wrapper_mixin import DocumentModelWrapperMixin
 
-class HardCopyDocumentModelWrapper(SendHardCopyModelWrapperMixin, DocumentModelWrapperMixin,
-                                   ModelWrapper):
+
+class HardCopyDocumentModelWrapper(
+        SendHardCopyModelWrapperMixin, DocumentModelWrapperMixin, ModelWrapper):
 
     model = 'document_tracking.document'
     querystring_attrs = ['doc_identifier', 'document_form']
@@ -63,3 +64,15 @@ class HardCopyDocumentModelWrapper(SendHardCopyModelWrapperMixin, DocumentModelW
             doc_identifier=self.object.doc_identifier,
             document_form=self.object.document_form,)
         return options
+
+    @property
+    def sent(self):
+        send_hard_copies_model_cls = django_apps.get_model(
+            'document_tracking.sendhardcopy')
+        try:
+            send_hard_copies_model_cls.objects.get(
+                doc_identifier=self.object.doc_identifier)
+        except send_hard_copies_model_cls.DoesNotExist:
+            return False
+        else:
+            return True

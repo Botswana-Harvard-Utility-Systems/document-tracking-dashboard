@@ -32,6 +32,7 @@ def sent_document_button(model_wrapper):
         send_document_href=model_wrapper.href,
         doc_identifier=model_wrapper.object.doc_identifier)
 
+
 @register.inclusion_tag('document_tracking_dashboard/buttons/forward_document_button.html')
 def forward_document_button(model_wrapper):
     return dict(
@@ -50,7 +51,8 @@ def send_button(model_wrapper):
 def send_hard_copy_document_button(model_wrapper):
     return dict(
         send_hard_copy_document_href=model_wrapper.send_hard_copy_document.href,
-        doc_identifier=model_wrapper.object.doc_identifier)
+        doc_identifier=model_wrapper.object.doc_identifier,
+        sent=model_wrapper.sent)
 
 
 @register.inclusion_tag('document_tracking_dashboard/buttons/edit_document_button.html')

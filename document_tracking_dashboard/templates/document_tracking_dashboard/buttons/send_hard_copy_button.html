@@ -1,8 +1,10 @@
- <a id="document_send_{{ doc_identifier }}"
- 	title="{{ title }}"
-
-            class="btn btn-info btn-sm" data-toggle="tooltip"  data-placement="right"
-            href="{{ send_hard_copy_document_href }}">
-
-     	Send document
+ <a id="document_send_{{ doc_identifier }}" title="{{ title }}"
+	{% if sent %}
+           class="btn btn-success btn-sm" data-toggle="tooltip"  data-placement="right" disabled>
+           Sent <i class="fa fa-check-circle"></i>
+	{% else %}
+		class="btn btn-info btn-sm" data-toggle="tooltip"  data-placement="right"
+           href="{{ send_hard_copy_document_href }}">
+           Send document
+	{% endif %}
  </a>
