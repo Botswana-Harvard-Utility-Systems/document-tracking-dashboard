@@ -42,8 +42,8 @@ class DocumentListBoardView(
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        # import pdb; pdb.set_trace()
-        doc_identifier = kwargs.get('doc_identifier', None)
+
+        model_obj = self.model_cls(document_form='soft_copy')
         context.update(
             soft_copy=Document.objects.filter(
                 user_created=self.request.user.username).filter(
@@ -60,7 +60,7 @@ class DocumentListBoardView(
             reports=Document.objects.filter(
                 user_created=self.request.user.username).filter(
                 document_form='report').count,
-            document_add_url=self.model_cls().get_absolute_url()
+            document_add_url=self.model_wrapper_cls(model_obj=model_obj).href
         )
         return context
 

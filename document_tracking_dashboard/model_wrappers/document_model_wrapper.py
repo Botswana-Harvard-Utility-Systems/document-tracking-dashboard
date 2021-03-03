@@ -11,14 +11,7 @@ class DocumentModelWrapper(SentDocumentModelWrapperMixin, ModelWrapper):
 
     model = 'document_tracking.document'
     querystring_attrs = ['doc_identifier', 'document_form']
-    next_url_attrs = ['doc_identifier', 'document_form']
-    next_url_name = settings.DASHBOARD_URL_NAMES.get(
-                                'document_listboard_url')
-
-    @property
-    def document_form(self):
-        document_form = 'Soft-Copy'
-        return document_form
+    next_url_name = settings.DASHBOARD_URL_NAMES.get('document_listboard_url')
 
     @property
     def doc_identifier(self):
@@ -40,9 +33,9 @@ class DocumentModelWrapper(SentDocumentModelWrapperMixin, ModelWrapper):
     def document(self):
         """Returns a wrapped saved or unsaved document.
         """
-        model_obj = self.document_cls(
+        model_obj = self.document_model_obj or self.document_cls(
             **self.document_options)
-        return DocumentModelWrapper(document_model_obj=model_obj)
+        return DocumentModelWrapper(model_obj=model_obj)
 
     @property
     def document_cls(self):

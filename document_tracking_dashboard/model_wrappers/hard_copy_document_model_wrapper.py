@@ -11,7 +11,7 @@ class HardCopyDocumentModelWrapper(SendHardCopyModelWrapperMixin, DocumentModelW
                                    ModelWrapper):
 
     model = 'document_tracking.document'
-    querystring_attrs = ['doc_identifier']
+    querystring_attrs = ['doc_identifier', 'document_form']
     next_url_attrs = ['doc_identifier']
     next_url_name = settings.DASHBOARD_URL_NAMES.get(
                                 'hard_copy_document_listboard_url')
@@ -33,6 +33,14 @@ class HardCopyDocumentModelWrapper(SendHardCopyModelWrapperMixin, DocumentModelW
             return None
 
     @property
+    def hard_copy_document(self):
+        """Returns a wrapped saved or unsaved hard document.
+        """
+        model_obj = self.hard_copy_document_model_obj or self.hard_copy_document_cls(
+            **self.create_hard_copy_document_options)
+        return HardCopyDocumentModelWrapper(model_obj=model_obj)
+
+    @property
     def hard_copy_document_cls(self):
         return django_apps.get_model('document_tracking.document')
 
@@ -42,7 +50,8 @@ class HardCopyDocumentModelWrapper(SendHardCopyModelWrapperMixin, DocumentModelW
         unpersisted document model instance.
         """
         options = dict(
-            doc_identifier=self.object.doc_identifier)
+            doc_identifier=self.object.doc_identifier,
+            document_form=self.object.document_form,)
         return options
 
     @property
@@ -51,5 +60,6 @@ class HardCopyDocumentModelWrapper(SendHardCopyModelWrapperMixin, DocumentModelW
         document model instance.
         """
         options = dict(
-            doc_identifier=self.object.doc_identifier)
+            doc_identifier=self.object.doc_identifier,
+            document_form=self.object.document_form,)
         return options
