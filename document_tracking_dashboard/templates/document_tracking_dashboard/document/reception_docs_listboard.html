@@ -135,15 +135,12 @@
                 <!--<i class="far fa-handshake fa-lg fa-fw"></i> -->
                 <input type="submit" value="Hand-Over" class="btn btn-warning btn-sm">
             </form>
-            {% elif result.handed_over %}
-                Document Handed Over
-            {% else %}
-
         {% endif %}
-    {% elif result.handed_over %}
-        Document Handed Over
     {% endif %}
 {% endfor %}
+{% if result.handed_over %}
+    Document Handed Over
+{% endif %}
 </td>
 
 <td nowrap>{{ result.object.secondary_recep }}</td>
