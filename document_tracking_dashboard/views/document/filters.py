@@ -8,16 +8,6 @@ class DocumentViewFilters(ListboardViewFilters):
         label='All',
         lookup={})
 
-    soft_copy = ListboardFilter(
-        label='Soft-Copies',
-        position=10,
-        lookup={'document_form': 'soft_copy'},)
-
-    hard_copy = ListboardFilter(
-        label='Hard-Copies',
-        position=11,
-        lookup={'document_form': 'hard_copy'},)
-
     contract = ListboardFilter(
         label='Contracts',
         position=12,
