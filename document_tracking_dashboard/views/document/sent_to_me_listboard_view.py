@@ -97,7 +97,7 @@ class SentToMeListBoardView(
 
     def get_queryset(self):
         qs = super().get_queryset()
-        criterion1 = Q(department__name=self.employee_dept.name)
+        criterion1 = Q(department__dept_name=self.employee_dept.dept_name)
         criterion2 = Q(send_to__id__icontains=self.request.user.id)
         criterion3 = Q(group__in=self.request.user.groups.all())
         qs = qs.filter(criterion1 | criterion2 | criterion3)
