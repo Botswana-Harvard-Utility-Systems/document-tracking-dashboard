@@ -51,6 +51,11 @@ class SentDocumentViewFilters(ListboardViewFilters):
         label='Group',
         lookup={'group__name__icontains': 'group'})
 
+    department = ListboardFilter(
+        position=15,
+        label='Department',
+        lookup={'dept__name__icontains': 'department'})
+
 
 class ReceptionViewFilters(ListboardViewFilters):
 
