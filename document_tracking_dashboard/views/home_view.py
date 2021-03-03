@@ -15,10 +15,8 @@ class HomeView(EdcBaseViewMixin, NavbarViewMixin, TemplateView):
 
     @property
     def is_receptionist(self):
-        reception_groups = ['BHP HQ Reception', 'Finance Reception',
-                            'CTU Reception']
         return self.request.user.groups.filter(
-            name__in=reception_groups).count() != 0
+            name__icontains='reception').count() != 0
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
