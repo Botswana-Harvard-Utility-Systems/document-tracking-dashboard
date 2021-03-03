@@ -72,7 +72,7 @@
         <td nowrap>{% if result.document_form != 'hard_copy' %}<a href="{{ result.object.file.url }}"  target="_blank">
          	{{result.document_name}} </a>{% else %} Not Downloadable {% endif %}
         </td>
-        {% if document_type == "OTHER" %}
+        {% if result.document_type == 'OTHER' %}
           <td nowrap>{{ result.document_type_other }}</td>
         {% else %}
           <td nowrap>{{ result.document_type }}</td>
