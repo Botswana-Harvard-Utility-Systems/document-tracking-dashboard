@@ -97,21 +97,10 @@ class SentToMeListBoardView(
 
     def get_queryset(self):
         qs = super().get_queryset()
-
-        if self.request.user.groups.filter(name='BHP HQ').exists():
-            # criterion1 = Q(department__in=self.request.user.department.all())
-            criterion2 = Q(send_to__id__icontains=self.request.user.id)
-            criterion3 = Q(group__in=self.request.user.groups.all())
-            qs = qs.filter(criterion2 | criterion3)
-            return qs
-
-        elif self.request.user.groups.filter(name='BHP HQ').exists():
-            # criterion1 = Q(department__in=self.request.user.department.all())
-            criterion2 = Q(send_to__id__icontains=self.request.user.id)
-            criterion3 = Q(group__in=self.request.user.groups.all())
-            qs = qs.filter(criterion2 | criterion3)
-            return qs
-
+        criterion1 = Q(department__name=self.employee_dept.name)
+        criterion2 = Q(send_to__id__icontains=self.request.user.id)
+        criterion3 = Q(group__in=self.request.user.groups.all())
+        qs = qs.filter(criterion1 | criterion2 | criterion3)
         return qs
 
     def post(self, request, *args, **kwargs):
