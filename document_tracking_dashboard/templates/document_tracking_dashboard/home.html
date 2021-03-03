@@ -20,7 +20,7 @@
     <br><br><br>
     <div class="box">
        <div class="icon"><i class="ion-ios-analytics-outline" style="color: #ff689b;"></i></div>
-        {% if request.user|has_primary_recep:"BHP HQ" or request.user|has_primary_recep:"Finance Reception" %}
+        {% if is_receptionist %}
         <p class="h4"><a href="{% url reception_docs_listboard_url %}" class="btn btn-default btn-lm"><i class="fa fa-file"></i>&nbsp;Receive Hard-Copies</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         <br>
         <br>

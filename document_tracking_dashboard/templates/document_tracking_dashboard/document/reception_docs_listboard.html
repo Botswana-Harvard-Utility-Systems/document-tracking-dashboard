@@ -38,7 +38,9 @@
     <td style="white-space: nowrap;">
     <div class="btn-group">
 
-        {% if request.user|has_primary_recep:"BHP HQ" %}
+
+        {% for group in request.user.groups.all %}
+            {% if group.name == result.object.reception.name %}
                 {% if result.recep_received == '' %}
 
         <form method="post" action="{% url reception_docs_listboard_url %}">
@@ -49,11 +51,13 @@
         </form>
 
                 {% endif %}
-        {% endif %}
+            {% endif %}
+        {% endfor %}
 
 
-        {% if request.user|has_secondary_recep:"Finance Reception" %}
-                {% if result.secondary_recep_received == '' %}
+        {% for group in request.user.groups.all %}
+            {% if group.name == result.object.secondary_recep.name %}
+                {% if result.courier != '' and result.secondary_recep_received == '' %}
 
         <form method="post" action="{% url reception_docs_listboard_url %}">
               {% csrf_token %}
@@ -63,7 +67,8 @@
         </form>
 
                 {% endif %}
-        {% endif %}
+            {% endif %}
+        {% endfor %}
 
 
     </div>
@@ -94,7 +99,7 @@
     <input type="hidden" name="identifier" value="{{ result.doc_identifier }}">
     <input type="hidden" name="update" value="update courier">
 
-{% if result.recep_received != '' %}
+{% if result.recep_received != '' and result.courier == '' %}
     {% for group in request.user.groups.all %}
         {% if group.name == result.object.reception.name %}
                 <select id="courier" name="courier">
@@ -122,20 +127,26 @@
 </td>
 
 <td>
-{% if result.handed_over %}
+{% for group in request.user.groups.all %}
+    {% if group.name == result.object.secondary_recep.name %}
+        {% if result.courier != '' and not result.handed_over %}
+            <form method="post" action="{% url reception_docs_listboard_url %}">
+              {% csrf_token %}
+                  <input type="hidden" name="identifier" value="{{ result.doc_identifier }}">
+                  <input type="hidden" name="update" value="hand_over">
+
+                <!--<i class="far fa-handshake fa-lg fa-fw"></i> -->
+                <input type="submit" value="Hand-Over" class="btn btn-warning btn-sm">
+            </form>
+            {% elif result.handed_over %}
+                Document Handed Over
+            {% else %}
+
+        {% endif %}
+    {% elif result.handed_over %}
         Document Handed Over
-{% elif not result.secondary_recep_received %}
-
-{% else %}
-    <form method="post" action="{% url reception_docs_listboard_url %}">
-      {% csrf_token %}
-          <input type="hidden" name="identifier" value="{{ result.doc_identifier }}">
-          <input type="hidden" name="update" value="hand_over">
-
-        <!--<i class="far fa-handshake fa-lg fa-fw"></i> -->
-        <input type="submit" value="Hand-Over" class="btn btn-warning btn-sm">
-    </form>
-{% endif %}
+    {% endif %}
+{% endfor %}
 </td>
 
 <td nowrap>{{ result.object.secondary_recep }}</td>
