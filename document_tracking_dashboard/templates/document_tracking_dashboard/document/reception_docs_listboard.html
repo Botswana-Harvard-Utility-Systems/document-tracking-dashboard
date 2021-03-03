@@ -126,7 +126,7 @@
 <td>
 {% for group in request.user.groups.all %}
     {% if group.name == result.object.secondary_recep.name %}
-        {% if result.courier != '' and not result.handed_over and result.recep_received %}
+        {% if result.courier != '' and not result.handed_over and result.secondary_recep_received %}
             <form method="post" action="{% url reception_docs_listboard_url %}">
               {% csrf_token %}
                   <input type="hidden" name="identifier" value="{{ result.doc_identifier }}">
