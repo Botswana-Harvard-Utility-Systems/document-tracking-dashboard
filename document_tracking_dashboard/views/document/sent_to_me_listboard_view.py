@@ -86,7 +86,7 @@ class SentToMeListBoardView(
             department = self.employee_dept
             options = {key: val for key, val in options.items() if key != 'dept__name__icontains'}
             options.update({'department__dept_name': department.dept_name})
-        options.update({'send_to': request.user.id})
+        # options.update({'send_to': request.user.id})
         return options
 
     def extra_search_options(self, search_term):
