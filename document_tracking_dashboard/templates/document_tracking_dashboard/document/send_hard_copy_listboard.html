@@ -82,40 +82,10 @@
         {% if result.courier == '' %}
             {% edit_document_button result %}
         {% endif %}
-
-        {% if request.user|has_primary_recep:"BHP HQ" %}
-                {% if result.recep_received == '' %}
-
-        <form method="post" action="{% url send_hard_copy_listboard_url %}">
-              {% csrf_token %}
-                  <input type="hidden" name="identifier" value="{{ result.doc_identifier }}">
-                  <input type="submit" value="Receive Document" class="btn btn-warning btn-sm">
-        </form>
-
-                {% else %}
-                {% edit_document_button result %}
-                {% endif %}
-        {% endif %}
-
-        {% if not request.user|has_primary_recep:"BHP HQ" %}
-            {% if request.user|has_secondary_recep:"Finance Reception" %}
-                    {% if result.secondary_recep_received == '' %}
-
-            <form method="post" action="{% url send_hard_copy_listboard_url %}">
-                  {% csrf_token %}
-                      <input type="hidden" name="identifier" value="{{ result.doc_identifier }}">
-                      <input type="submit" value="Receive Document" class="btn btn-warning btn-sm">
-            </form>
-
-                    {% else %}
-                    {% edit_document_button result %}
-                    {% endif %}
-            {% endif %}
-        {% endif %}
 		
         {% if result.secondary_recep_received != '' %}
         
-            {% if result.object.send_to == request.user %}
+            {% if result.object.send_to == request.user and result.handed_over %}
                 {% if result.received_by == '' %}
                 <form method="post" action="{% url send_hard_copy_listboard_url %}">
                       {% csrf_token %}
@@ -138,7 +108,7 @@
 	<td nowrap> </td>
 	<td nowrap> {{result.doc_obj.document_name}} </td>
     <td nowrap>{% if result.object.send_to %}
-        {{result.object.send_to}} {% else %} - - - - {% endif %}</td>
+        {{ result.object.send_to.get_full_name }} {% else %} - - - - {% endif %}</td>
     <td nowrap>{{ result.object.reception }}</td>
     <td nowrap>{{ result.recep_received }}</td>
 
@@ -160,7 +130,13 @@
             Courier not assigned yet
         {% endif %}
     <td nowrap>{{ result.object.secondary_recep }}</td>
-    <td nowrap>{{ result.object.received_by }}</td>
+    <td nowrap>
+        {% if result.received_by %}
+            {{ result.object.send_to.get_full_name }}
+        {% else %}
+        - - - -
+        {% endif %}
+    </td>
 
 		{% endblock listboard_table_columns %}
 		</tr>

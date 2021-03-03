@@ -8,16 +8,6 @@ class DocumentViewFilters(ListboardViewFilters):
         label='All',
         lookup={})
 
-    soft_copy = ListboardFilter(
-        label='Soft-Copies',
-        position=10,
-        lookup={'document_form': 'soft_copy'},)
-
-    hard_copy = ListboardFilter(
-        label='Hard-Copies',
-        position=11,
-        lookup={'document_form': 'hard_copy'},)
-
     contract = ListboardFilter(
         label='Contracts',
         position=12,
@@ -50,6 +40,11 @@ class SentDocumentViewFilters(ListboardViewFilters):
         position=15,
         label='Group',
         lookup={'group__name__icontains': 'group'})
+
+    department = ListboardFilter(
+        position=15,
+        label='Department',
+        lookup={'dept__name__icontains': 'department'})
 
 
 class ReceptionViewFilters(ListboardViewFilters):

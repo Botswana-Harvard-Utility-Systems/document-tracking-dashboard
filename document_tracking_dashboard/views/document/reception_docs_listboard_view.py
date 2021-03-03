@@ -12,7 +12,6 @@ from edc_dashboard.views import ListboardView
 from edc_navbar import NavbarViewMixin
 
 from document_tracking.models import Courier, SendHardCopy
-from document_tracking.forms import CourierForm
 
 from .filters import ReceptionViewFilters
 from ...model_wrappers import SendHardCopyModelWrapper
@@ -48,6 +47,14 @@ class ReceptionDocsListBoardView(
         """Returns a new sent document obj.
         """
         return SendHardCopyModelWrapper(SendHardCopy(doc_identifier=doc_identifier))
+
+    # @property
+    # def in_primary_recep(self):
+    #     primary_receptions =
+    #     reception_groups = ['BHP HQ', 'Finance Reception', 'CTU Reception']
+    #     return self.request.user.groups.filter(
+    #         name__in=reception_groups).count() != 0
+
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

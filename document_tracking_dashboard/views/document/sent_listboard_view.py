@@ -21,7 +21,7 @@ class SentListBoardView(
     listboard_url = 'sent_listboard_url'
     listboard_panel_style = 'default'
     listboard_fa_icon = "fas fa-file"
-    listboard_view_filters = SentDocumentViewFilters()
+#     listboard_view_filters = SentDocumentViewFilters()
 
     model = 'document_tracking.senddocument'
     model_wrapper_cls = SentDocumentModelWrapper
@@ -81,9 +81,6 @@ class SentListBoardView(
         if kwargs.get('doc_identifier'):
             options.update(
                 {'doc_identifier': kwargs.get('doc_identifier')})
-        group_filter = options.get('group__name__icontains', '')
-        if group_filter:
-            options = {key: val for key, val in options.items() if key != 'group__name__icontains'}
         options.update({'user_created': request.user.username})
         return options
 
