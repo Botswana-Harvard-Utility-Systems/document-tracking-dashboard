@@ -8,9 +8,6 @@
     href="{% url document_url %}">
         <i class="fa fa-arrow-left fa-sm"></i> Go Back
     </a>&nbsp;&nbsp;
-	All <span class="float-right badge badge-light round">{{ all }}</span> &ensp;
-	Pending <span class="float-right badge badge-light round">{{ sent }}</span> &ensp;
-	Successfully Sent <span class="float-right badge badge-light round">{{ received }}</span> &ensp;
 
 {% endblock listboard_panel %}
 
@@ -36,7 +33,7 @@
     {% if result.status == 'sent' %}
              <form method="post" action="{% url sent_to_me_listboard_url %}">
               {% csrf_token %}
-                  <input type="hidden" name="identifier" value="{{ result.doc_identifier }}">
+                  <input type="hidden" name="identifier" value="{{ result.transaction_identifier }}">
                   <input type="submit" value="Receive Document" class="btn btn-warning btn-sm">
             </form>
     {% elif result.status == 'received' %}

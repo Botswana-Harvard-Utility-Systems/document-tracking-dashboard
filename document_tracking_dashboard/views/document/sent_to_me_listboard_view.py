@@ -86,6 +86,7 @@ class SentToMeListBoardView(
             department = self.employee_dept
             options = {key: val for key, val in options.items() if key != 'dept__name__icontains'}
             options.update({'department__dept_name': department.dept_name})
+        options.update({'send_to': request.user.id})
         return options
 
     def extra_search_options(self, search_term):
@@ -119,7 +120,7 @@ class SentToMeListBoardView(
             identifier = request.POST.get('identifier')
             if identifier:
                 SendDocument.objects.filter(
-                    doc_identifier=identifier).update(
+                    transaction_identifier=identifier).update(
                     status='received',
                     received_by=request.user.username)
                 print("Document set to received")
