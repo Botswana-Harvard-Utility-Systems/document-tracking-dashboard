@@ -1,7 +1,9 @@
 import re
+from django.apps import apps as django_apps
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import Group
 from django.db.models import Q
+from django.core.exceptions import ValidationError
 from django.utils.decorators import method_decorator
 from django.http import HttpResponseRedirect
 from django.urls import reverse
@@ -29,6 +31,7 @@ class SentToMeListBoardView(
     listboard_url = 'sent_to_me_listboard_url'
     listboard_panel_style = 'default'
     listboard_fa_icon = "fas fa-file"
+    listboard_view_filters = SentDocumentViewFilters()
 
     model = 'document_tracking.senddocument'
     model_wrapper_cls = SentDocumentModelWrapper
@@ -37,7 +40,6 @@ class SentToMeListBoardView(
     ordering = '-modified'
     paginate_by = 10
     search_form_url = 'sent_to_me_listboard_url'
-    # listboard_view_filters = SentDocumentViewFilters()
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
@@ -72,15 +74,19 @@ class SentToMeListBoardView(
         )
         return context
 
-    # def get_queryset_filter_options(self, request, *args, **kwargs):
-    #     options = super().get_queryset_filter_options(request, *args, **kwargs)
-    #     if kwargs.get('doc_identifier'):
-    #         options.update(
-    #             {'doc_identifier': kwargs.get('doc_identifier')})
-    #
-    #     options.update()
-    #
-    #     return options
+    def get_queryset_filter_options(self, request, *args, **kwargs):
+        options = super().get_queryset_filter_options(request, *args, **kwargs)
+        group_filter = options.get('group__name__icontains', '')
+        if group_filter:
+            options = {key: val for key, val in options.items() if key != 'group__name__icontains'}
+            usr_groups = [g.name for g in self.request.user.groups.all()]
+            options.update({'group__name__in': usr_groups})
+        dept_filter = options.get('dept__name__icontains')
+        if dept_filter:
+            department = self.employee_dept
+            options = {key: val for key, val in options.items() if key != 'dept__name__icontains'}
+            options.update({'department__dept_name': department.dept_name})
+        return options
 
     def extra_search_options(self, search_term):
         q = Q()
@@ -123,3 +129,13 @@ class SentToMeListBoardView(
                 raise SentToMeViewError('Object not updated')
             url = reverse(url_name)
             return HttpResponseRedirect(url)
+
+    @property
+    def employee_dept(self):
+        employee_cls = django_apps.get_model('bhp_personnel.employee')
+        try:
+            employee = employee_cls.objects.get(email=self.request.user.email)
+        except employee_cls.DoesNotExist:
+            raise ValidationError('User does not exist as an employee')
+        else:
+            return employee.department
