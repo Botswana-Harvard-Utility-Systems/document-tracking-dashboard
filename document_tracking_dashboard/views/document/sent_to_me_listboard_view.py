@@ -111,7 +111,7 @@ class SentToMeListBoardView(
                 SendDocument.objects.filter(
                     transaction_identifier=identifier).update(
                     status='received',
-                    received_by=request.user)
+                    received_by=request.user.username)
                 print("Document set to received")
             try:
                 url_name = request.url_name_data['sent_to_me_listboard_url']
