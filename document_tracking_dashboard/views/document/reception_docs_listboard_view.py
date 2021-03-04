@@ -86,37 +86,38 @@ class ReceptionDocsListBoardView(
 
     def get_queryset_filter_options(self, request, *args, **kwargs):
         options = super().get_queryset_filter_options(request, *args, **kwargs)
-        if kwargs.get('doc_identifier'):
+        recep_filter = options.get('reception__name__icontains', '')
+        if recep_filter:
+            options = {key: val for key, val in options.items() if
+                       key != 'reception__name__icontains'}
+            usr_groups = [g.name for g in self.request.user.groups.all()]
+            options.update({'reception__name__in': usr_groups})
+        secondary_recep_filter = options.get('secondary_recep__name__icontains', '')
+        if secondary_recep_filter:
+            options = {key: val for key, val in options.items() if
+                       key != 'secondary_recep__name__icontains'}
+            usr_groups = [g.name for g in self.request.user.groups.all()]
+            options.update({'secondary_recep__name__in': usr_groups})
 
-            options.update(
-                {'doc_identifier': kwargs.get('doc_identifier')})
-
-        options.update()
+        # if kwargs.get('doc_identifier'):
+        #     options.update(
+        #         {'doc_identifier': kwargs.get('doc_identifier')})
+        # # options.update()
 
         return options
 
     def get_queryset(self):
         qs = super().get_queryset()
-
-        if self.request.user.groups.filter(name='BHP HQ').exists():
-            criterion1 = Q(reception__name='BHP HQ')
-            criterion2 = Q(secondary_recep__name='BHP HQ')
-            qs = qs.filter(criterion1 | criterion2)
-            return qs
-
-        elif self.request.user.groups.filter(name='Finance Reception').exists():
-            criterion1 = Q(reception__in=self.request.user.groups.all())
-            criterion2 = Q(secondary_recep__name='Finance Reception')
-            qs = qs.filter(criterion1 | criterion2)
-            return qs
+        criterion1 = Q(reception__in=self.request.user.groups.all())
+        criterion2 = Q(secondary_recep__in=self.request.user.groups.all())
+        qs = qs.filter(criterion1 | criterion2)
+        return qs
 
         # criterion1 = Q(reception__in=self.request.user.groups.all())
         # criterion2 = Q(secondary_recep__in=self.request.user.groups.all())
         # criterion3 = Q(sent_to=self.request.user)
         # criterion4 = Q(user_created=self.request.user.username)
         # qs = qs.filter(criterion1 or criterion2 or criterion3 or criterion4)
-
-        return qs
 
     def extra_search_options(self, search_term):
         q = Q()
