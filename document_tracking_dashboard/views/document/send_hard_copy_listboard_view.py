@@ -1,6 +1,8 @@
 import re
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
+from django.apps import apps as django_apps
+from django.core.exceptions import ValidationError
 from django.utils.decorators import method_decorator
 from django.http import HttpResponseRedirect
 from django.urls import reverse
@@ -72,34 +74,21 @@ class SendHardCopyListBoardView(
     def get_queryset_filter_options(self, request, *args, **kwargs):
         options = super().get_queryset_filter_options(request, *args, **kwargs)
         if kwargs.get('doc_identifier'):
-
             options.update(
                 {'doc_identifier': kwargs.get('doc_identifier')})
-        # elif request.user.groups.filter(name='BHP HQ').exists():
-        #     options.update()
-        #
-        # elif request.user.groups.filter(name='Finance Reception').exists():
-        #     options.update()
-        #
-        # if SendHardCopy.objects.filter(send_to=request.user).exists():
-        #     options.update({'send_to': request.user})
-        #
-        # else:
-        #     options.update({'user_created': request.user.username})
 
-        options.update()
+        # options.update()
         return options
 
-    # def get_queryset(self):
-    #     qs = super().get_queryset()
-    #
-    #     criterion1 = Q(reception__in=self.request.user.groups.all())
-    #     criterion2 = Q(secondary_recep__in=self.request.user.groups.all())
-    #     criterion3 = Q(sent_to=self.request.user)
-    #     criterion4 = Q(user_created=self.request.user.username)
-    #     qs = qs.filter(criterion1 or criterion2 or criterion3 or criterion4)
-    #
-    #     return qs
+    def get_queryset(self):
+        qs = super().get_queryset()
+
+        criterion1 = Q(department__dept_name=self.employee_dept.dept_name)
+        criterion2 = Q(send_to__id__icontains=self.request.user.id)
+        criterion3 = Q(user_created=self.request.user.username)
+        qs = qs.filter(criterion1 | criterion2 | criterion3)
+
+        return qs
 
     def extra_search_options(self, search_term):
         q = Q()
@@ -156,3 +145,13 @@ class SendHardCopyListBoardView(
                     raise SentHardCopyViewError('Object not updated')
                 url = reverse(url_name)
                 return HttpResponseRedirect(url)
+
+    @property
+    def employee_dept(self):
+        employee_cls = django_apps.get_model('bhp_personnel.employee')
+        try:
+            employee = employee_cls.objects.get(email=self.request.user.email)
+        except employee_cls.DoesNotExist:
+            raise ValidationError('User does not exist as an employee')
+        else:
+            return employee.department
