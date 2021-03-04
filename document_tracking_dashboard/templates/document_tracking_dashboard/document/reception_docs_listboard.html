@@ -77,8 +77,8 @@
 	
 	<td nowrap>{{ result.doc_obj.document_name }}</td>
     <td nowrap>{{ result.user_created }}</td>
-    <td nowrap>{% if result.object.send_to %}
-        {{result.object.send_to}} {% else %} - - - - {% endif %}</td>
+    <td nowrap>{% if result.object.send_to.get_full_name %}
+        {{result.object.send_to.get_full_name}} {% else %} - - - - {% endif %}</td>
     <td nowrap>{{ result.object.department }}</td>
     {% if result.status == 'sent' %}
         <td nowrap>pending</td>

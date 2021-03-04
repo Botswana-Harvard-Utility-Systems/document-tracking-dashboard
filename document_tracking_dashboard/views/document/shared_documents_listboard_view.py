@@ -117,7 +117,7 @@ class SharedDocumentsListBoardView(
                 SendDocument.objects.filter(
                     doc_identifier=identifier).update(
                     status='received',
-                    received_by=request.user.username)
+                    received_by=request.user.username.get_full_name)
                 print("Document set to received")
             try:
                 url_name = request.url_name_data['shared_documents_listboard_url']
