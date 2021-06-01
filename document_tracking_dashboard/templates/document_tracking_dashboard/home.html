@@ -1,0 +1,43 @@
+{% extends 'document_tracking_dashboard/base.html' %}
+{% load static %}
+
+{% block scripts %}
+{{ block.super }}
+
+{% endblock scripts %}
+
+{% load document_dashboard_extras %}
+
+
+{% block main %}
+{{ block.super }}
+
+<div class="text-center">
+<div class="row">
+
+            <h2><p class="description" style="font-family:algerian"><b>Document Tracking Dashboard</b></p></h2>
+          <img src="{% static 'document_tracking_dashboard/images/doc3.png' %}" alt="Image" width="600" height="250">
+    <br><br><br>
+    <div class="box">
+       <div class="icon"><i class="ion-ios-analytics-outline" style="color: #ff689b;"></i></div>
+        {% if is_receptionist %}
+        <p class="h4"><a href="{% url reception_docs_listboard_url %}" class="btn btn-default btn-lm"><i class="fa fa-file"></i>&nbsp;Receive Hard-Copies</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <br>
+        <br>
+        {% else %}
+        {% endif %}
+
+       <p class="h4"><a href="{% url document_listboard_url %}" class="btn btn-default btn-lm"><i class="fa fa-file"></i>&nbsp;Send Electronic Documents</a>&nbsp;&nbsp;&nbsp;
+       <a href="{% url shared_documents_listboard_url %}" class="btn btn-default btn-lm"><i class="fa fa-list"></i>&nbsp;Published&nbsp;Documents</a>&nbsp;&nbsp;&nbsp;
+       <a href="{% url hard_copy_document_listboard_url %}" class="btn btn-default btn-lm"><i class="fas fa-chevron-right"></i>&nbsp;Send/Track Hard-Copy Documents</a>
+       </p>
+     </div>
+
+        </div>
+ </div>
+<br><br><br>
+
+
+</div>
+
+{% endblock main %}

@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -37,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'document_tracking_dashboard.apps.AppConfig',
 ]
 
 MIDDLEWARE = [
@@ -118,3 +120,19 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
+
+# dashboards
+DASHBOARD_URL_NAMES = {
+    'document_dashboard_url': 'document_tracking_dashboard:document_dashboard_url',
+    'document_listboard_url': 'document_tracking_dashboard:document_listboard_url',
+    'group_documents_listboard_url': 'document_tracking_dashboard:group_documents_listboard_url',
+    'sent_to_me_listboard_url': 'document_tracking_dashboard:sent_to_me_listboard_url',
+    'sent_listboard_url': 'document_tracking_dashboard:sent_listboard_url',
+}
+
+DASHBOARD_BASE_TEMPLATES = {
+    'listboard_base_template': 'bhp_utility_systems/base.html',
+    'document_dashboard_template': 'document_tracking_dashboard/document/document_dashboard.html',
+    'document_listboard_template': 'document_tracking_dashboard/document/document_listboard.html',
+    'sent_document_listboard_template': 'document_tracking_dashboard/document/document_listboard.html',
+}

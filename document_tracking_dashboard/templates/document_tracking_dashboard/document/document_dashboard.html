@@ -1,0 +1,118 @@
+{% extends 'edc_base/base.html' %}
+
+{% load admin_urls %}
+{% load edc_base_extras %}
+{% load document_dashboard_extras %}
+
+{% block extra-styles %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css">
+<style>
+.my-card
+{
+    position:absolute;
+    left:40%;
+    top:-20px;
+    border-radius:50%;
+}
+</style>
+{% endblock extra-styles %}
+
+{% block main %}
+
+<div class="container">
+	<div class="well">
+		<b>{{document.doc_identifier}} {{document.document_name}} </b>
+	</div>
+  <div class="row">
+  	<div class="col-md-9">
+
+	    <div class="panel panel-info">
+	      <div class="panel-heading">
+	      	Document
+
+	      </div>
+	      <div class="panel-body">
+	      	<table class="table table-striped">
+		    <thead>
+		      <tr>
+		      	<th>#</th>
+		        <th>Sender</th>
+		        <th>Document Name</th>
+		        <th>Sent-To</th>
+		        <th>Document</th>
+		      </tr>
+		    </thead>
+		    <tbody>
+		      <tr>
+		      	<td>{{ forloop.counter }}</td>
+
+		        <td>{{sent_document.doc_identifier}}</td>
+		        <td>{{sent_document.user_created}}</td>
+		        <td>{{document.document_name}}</td>
+		        <td nowrap>{% if sent_document.get_sent_to %}
+        		{{sent_document.get_sent_to}}{% else %} - - - - {% endif %}</td>
+		        <td>{% if document.document_form != 'hard_copy' %}<a href="{{ document.file.url }}"  target="_blank">
+                    Download Document</a>{% else %} Not Downloadable {% endif %}</td>
+		      </tr>
+		    </tbody>
+		  </table>
+	      </div>
+	    </div>
+
+   </div>
+
+   <div class="col-md-3">
+
+	   <div class="panel-group">
+    <div class="panel panel-info">
+       <div class="panel-heading">
+
+            <svg class="svg-inline--fa fa-file fa-w-16 fa-2x fa-fw" aria-hidden="true" data-prefix="far" data-icon="fas fa-file" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg=""><path fill="currentColor" d="M256 8C119.033 8 8 119.033 8 256s111.033 248 248 248 248-111.033 248-248S392.967 8 256 8zm0 48c110.457 0 200 89.543 200 200 0 36.982-10.049 71.611-27.548 101.328-7.072-25.444-25.663-54.208-63.93-65.374C377.207 271.782 384 248.414 384 224c0-70.689-57.189-128-128-128-70.689 0-128 57.19-128 128 0 24.414 6.793 47.783 19.478 67.954-38.299 11.175-56.876 39.913-63.938 65.362C66.046 327.601 56 292.976 56 256c0-110.457 89.543-200 200-200zm80 168c0 44.183-35.817 80-80 80s-80-35.817-80-80 35.817-80 80-80 80 35.817 80 80zM128 409.669v-27.758c0-20.41 13.53-38.348 33.156-43.955l24.476-6.993C206.342 344.648 230.605 352 256 352s49.658-7.352 70.369-21.038l24.476 6.993C370.47 343.563 384 361.5 384 381.911v27.758C349.315 438.592 304.693 456 256 456s-93.315-17.408-128-46.331z"></path></svg><!-- <i class="far fa-user-circle fa-2x fa-fw"></i> -->
+  	        <span class="pull-right">
+  	          <a href="{% url document_listboard_url %}{{ doc_identifier }}/" role="button" class="btn btn-sm btn-primary">
+  	                <svg class="svg-inline--fa fa-reply fa-w-16 fa-1x fa-fw" aria-hidden="true" data-prefix="fa" data-icon="reply" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg=""><path fill="currentColor" d="M8.309 189.836L184.313 37.851C199.719 24.546 224 35.347 224 56.015v80.053c160.629 1.839 288 34.032 288 186.258 0 61.441-39.581 122.309-83.333 154.132-13.653 9.931-33.111-2.533-28.077-18.631 45.344-145.012-21.507-183.51-176.59-185.742V360c0 20.7-24.3 31.453-39.687 18.164l-176.004-152c-11.071-9.562-11.086-26.753 0-36.328z"></path></svg><!-- <i class="fa fa-reply fa-1x fa-fw" aria-hidden="true"></i> --></a>
+  	        </span>
+
+		  </div>
+	   </div>
+	</div>
+
+   		<div class="panel panel-info">
+	      <div class="panel-heading">About Document</div>
+	      <div class="panel-body">
+			<b>Document Name:</b> {{document.document_name}}, {{document.document_form}}</br>
+			<b>Sent by:</b> {{sent_document.user_created}}</br>
+			<b>Sent To:</b> {{sent_document.get_sent_to}}</br>
+			<b>Final Doc Destination:</b>{% if sent_document.get_final_dest %}
+			  {{sent_document.get_final_dest}} {% else %} -- {% endif %}</br>
+			<b>Receiver At Destination:</b>{% if sent_document.get_final_dest_rec %}
+			  {{sent_document.get_final_dest_rec}} {% else %} -- {% endif %}</br>
+			<b>Status:</b> {{sent_document.status}}</br>
+			<b>Priority:</b> {{sent_document.priority}}</br>
+			<b>Sent Date:</b> {{sent_document.sent_date}}</br>
+	      </div>
+	    </div>
+
+	   <div class="panel panel-default">
+      <div class="panel-heading">
+          <h6 class="panel-title">
+              <a id="document_send" data-toggle="collapse" data-parent="#accordion" href="">Forward Document <span class="caret"></span></a>
+          </h6>
+      </div>
+      <div id="data-manager-panel" class="panel-collapse collapse in">
+
+	    | <a href="{{ data_action_item_add_url }}" class="btn btn-sm btn-primary" role="button"><svg class="svg-inline--fa fa-plus fa-w-14 fa-sm" aria-hidden="true" data-prefix="fa" data-icon="plus" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg=""><path fill="currentColor" d="M448 294.2v-76.4c0-13.3-10.7-24-24-24H286.2V56c0-13.3-10.7-24-24-24h-76.4c-13.3 0-24 10.7-24 24v137.8H24c-13.3 0-24 10.7-24 24v76.4c0 13.3 10.7 24 24 24h137.8V456c0 13.3 10.7 24 24 24h76.4c13.3 0 24-10.7 24-24V318.2H424c13.3 0 24-10.7 24-24z"></path></svg> Forward</a>
+		|
+		<a href="{% url sent_to_me_listboard_url %}" class="btn btn-sm btn-primary" role="button">See all</a>
+		<div class="panel-body">
+
+</div>
+
+      </div>
+    </div>
+
+   </div>
+ </div>
+</div>
+
+{% endblock main %}

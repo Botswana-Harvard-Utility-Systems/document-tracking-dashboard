@@ -1,0 +1,63 @@
+{% extends "edc_dashboard/listboard.html" %}
+{% load admin_urls %}
+{% load edc_base_extras %}
+{% load document_dashboard_extras %}
+
+{% block listboard_panel %}
+&ensp;    <a id="return_to_home" title="go back" class="btn btn-sm btn-default" role="button"
+    href="{% url document_url %}">
+        <i class="fa fa-arrow-left fa-sm"></i> Go Back
+    </a>&nbsp;&nbsp;
+	All <span class="float-right badge badge-light round">{{ all }}</span> &ensp;
+	Pending <span class="float-right badge badge-light round">{{ sent }}</span> &ensp;
+	Successfully Sent <span class="float-right badge badge-light round">{{ received }}</span> &ensp;
+
+{% endblock listboard_panel %}
+
+{% block listboard_table_header %}
+    <!-- begin results header -->
+    <th>#</th>
+    <th></th>
+    <th>Download Document</th>
+    <th>Sent-To</th>
+    <th>Departments Sent To</th>
+    <th>Status</th>
+    <th>Priority</th>
+    <th>Sent-Date</th>
+    <th>Received By</th>
+    <!-- end results header -->
+{% endblock listboard_table_header %}
+
+
+{% block listboard_table_button_column %}
+    <td style="white-space: nowrap;">
+    <div class="btn-group">
+
+     {% sent_document_button result %}
+
+    </div>
+    </td>
+{% endblock listboard_table_button_column %}
+
+
+{% block listboard_table_columns %}
+	<td nowrap>{% if result.doc_obj.document_form != 'hard_copy' %}<a href="{{ result.doc_obj.file.url }}"  target="_blank">
+         {{result.doc_obj.document_name}} </a>{% else %} Not Downloadable {% endif %}
+    </td>
+    <td nowrap>{% if result.object.get_sent_to %}
+    {{result.object.get_sent_to}} {% else %} - - - - {% endif %}</td>
+    <td nowrap>{% if result.object.get_dept %}
+    {{result.object.get_dept}} {% else %} - - - - {% endif %}</td>
+    {% if result.status == 'sent' %}
+        <td nowrap>pending</td>
+    {% elif result.status == 'received' %}
+        <td nowrap>successfully sent</td>
+    {% else %}
+    <td nowrap>{{ result.status }}</td>
+    {% endif %}
+    <td nowrap>{{ result.priority }}</td>
+    <td nowrap>{{ result.sent_date }}</td>
+    <td nowrap>{% if result.object.received_by %}
+        {{result.object.received_by}} {% else %} - - - - {% endif %}</td>
+
+{% endblock listboard_table_columns %}

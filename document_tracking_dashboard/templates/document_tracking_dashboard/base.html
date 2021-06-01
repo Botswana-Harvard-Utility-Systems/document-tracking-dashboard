@@ -1,0 +1,65 @@
+{% extends 'edc_base/base.html' %}
+
+{% load static %}
+
+{% block extra-scripts %}
+{{ block.super }}
+<script>
+
+$(document).ready(function(){
+    $('[data-toggle="tooltip"]').tooltip();
+    $("#success-alert").fadeTo(1000, 500).slideUp(500, function(){
+        $("#success-alert").slideUp(500);
+    });    
+});
+
+</script>
+
+<script type="text/javascript">
+    var user = '{{request.user}}'
+
+    function getToken(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+const csrftoken = getToken('csrftoken');
+</script>
+
+{% endblock extra-scripts %} 
+
+{% block extra-styles %}
+{{ block.super }}
+<style>
+  .panel-extended {
+    min-height: 200px;
+    overflow-y: scroll;
+  }
+  </style>
+{% endblock %}
+
+
+
+{% block topbar_navbar_extra_items %}
+
+    {{ block.super }}
+    {{ navbar.name }}
+
+{% endblock topbar_navbar_extra_items %}
+
+
+{% block modals %}
+
+{{ block.super }}
+    {% include 'document_tracking_dashboard/help_modal.html' %}
+{% endblock modals %}

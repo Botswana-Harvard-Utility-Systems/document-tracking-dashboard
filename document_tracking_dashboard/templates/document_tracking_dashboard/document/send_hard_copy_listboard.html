@@ -1,0 +1,171 @@
+{% extends listboard_base_template %}
+{% load admin_urls %}
+{% load edc_base_extras %}
+{% load document_dashboard_extras %}
+{% load edc_dashboard_extras %}
+
+{% block main %}
+
+<div id="div-home-right" class="col-md-12">
+ <!-- start listboard main block-->
+ <div class="panel-group">
+
+     <ul class="nav nav-tabs">
+  <li class="nav-item">
+    <a class="nav-link" href="{% url hard_copy_document_listboard_url %}">Hard Copies Added</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="{% url send_hard_copy_listboard_url %}">Hard Copies Sent/Received</a>
+  </li>
+</ul>
+
+  <div class="panel panel-{{ listboard_panel_style }}">
+   <div class="panel-heading">
+
+    <i class="{{ listboard_fa_icon }} fa-2x"></i>
+
+    <!-- begin search form -->
+    <span class="pull-right">
+      {% block listboard_search_form %}
+        {% include 'edc_dashboard/search_form.html' %}
+      {% endblock listboard_search_form %}
+    </span>
+    <!-- end search form -->
+
+    {% block listboard_panel %}
+
+    <a id="return_to_home" title="go back" class="btn btn-sm btn-default" role="button"
+        href="{% url document_url %}">
+            <i class="fa fa-arrow-left fa-sm"></i> Go Back
+    </a>
+    {% endblock listboard_panel %}
+
+   </div> <!--end panel heading -->
+
+   <!-- begin table -->
+   <div class="table table-responsive">
+    <table class="table table-condensed table-hover small">
+     <thead>
+
+      {% block listboard_table_header %}
+        <!-- begin results header -->
+    <th>#</th>
+    <th></th>
+    <th></th>
+    <th></th>
+    <th>Document Name</th>
+    <th>Send-To</th>
+    <th>Reception</th>
+    <th>Receptionist Received</th>
+    <th>Status</th>
+    <th>Priority</th>
+    <th>Sent-Date</th>
+    <th>Courier</th>
+    <th>Destination Reception</th>
+    <th>Received By</th>
+        <!-- end results header -->
+	  {% endblock listboard_table_header %}
+
+      </thead><tbody>
+
+      {% block listboard_table_body %}
+
+      {% for result in results %}
+        <tr>
+
+         <td>{{ forloop.counter }}</td>
+		 {% block listboard_table_button_column %}
+
+    <td style="white-space: nowrap;">
+    <div class="btn-group">
+
+        {% if result.courier == '' %}
+            {% edit_document_button result %}
+        {% endif %}
+		
+        {% if result.secondary_recep_received != '' %}
+        
+            {% if result.object.send_to == request.user and result.handed_over %}
+                {% if result.received_by == '' %}
+                <form method="post" action="{% url send_hard_copy_listboard_url %}">
+                      {% csrf_token %}
+                          <input type="hidden" name="identifier" value="{{ result.doc_identifier }}">
+                          <input type="submit" value="Receive Document" class="btn btn-warning btn-sm">
+                </form>
+
+                {%endif  %}
+
+            {% endif %}
+        {% endif %}
+
+    </div>
+    </td>
+
+		 {% endblock listboard_table_button_column %}
+
+		{% block listboard_table_columns %}
+	<td nowrap> </td>
+	<td nowrap> </td>
+	<td nowrap> {{result.doc_obj.document_name}} </td>
+    <td nowrap>{% if result.object.send_to %}
+        {{ result.object.send_to.get_full_name }} {% else %} - - - - {% endif %}</td>
+    <td nowrap>{{ result.object.reception }}</td>
+    <td nowrap>{{ result.recep_received }}</td>
+
+    {% if result.status == 'sent' %}
+        <td nowrap>pending</td>
+    {% elif result.status == 'received' %}
+        <td nowrap>successfully sent</td>
+    {% else %}
+    <td nowrap>{{ result.status }}</td>
+    {% endif %}
+
+
+    <td nowrap>{{ result.priority }}</td>
+    <td nowrap>{{ result.sent_date }}</td>
+    <td nowrap>
+        {% if result.object.courier %}
+            {{ result.object.courier }}</td>
+        {% else %}
+            Courier not assigned yet
+        {% endif %}
+    <td nowrap>{{ result.object.secondary_recep }}</td>
+    <td nowrap>
+        {% if result.received_by %}
+            {{ result.object.send_to.get_full_name }}
+        {% else %}
+        - - - -
+        {% endif %}
+    </td>
+
+		{% endblock listboard_table_columns %}
+		</tr>
+
+     {% endfor %}
+
+    {% endblock listboard_table_body %}
+
+    </tbody></table>
+
+	<!-- begin spacer rows -->
+	<table>
+	<tr><td>&nbsp;</td></tr>
+	<tr><td>&nbsp;</td></tr>
+	<tr><td>&nbsp;</td></tr>
+	<tr><td>&nbsp;</td></tr>
+	<tr><td>&nbsp;</td></tr>
+	</table>
+	<!-- end spacer rows -->
+
+   </div><!-- end table -->
+
+{% paginator_row %}
+
+</div>  <!--end panel -->
+</div> <!--end panel-group -->
+<!-- end listboard main block -->
+
+</div>
+
+
+{% endblock main %}

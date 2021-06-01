@@ -1,0 +1,152 @@
+{% extends "edc_dashboard/listboard.html" %}
+{% load static %}
+{% load admin_urls %}
+{% load edc_base_extras %}
+{% load document_dashboard_extras %}
+
+{% block listboard_panel %}
+
+&ensp;    <a id="return_to_home" title="go back" class="btn btn-sm btn-default" role="button"
+    href="{% url document_url %}">
+        <i class="fa fa-arrow-left fa-sm"></i> Go Back
+    </a>&nbsp;&nbsp;
+
+{% endblock listboard_panel %}
+
+{% block listboard_table_header %}
+    <!-- begin results header -->
+    <th>#</th>
+    <th></th>
+    <th>Document Name</th>
+    <th>Sender</th>
+    <th>Send-To</th>
+    <th>Department</th>
+    <th>Status</th>
+    <th>Sent-Date</th>
+    <th>Courier</th>
+    <th>Hand-Over Document</th>
+    <th>Destination Reception</th>
+    <th>User Received</th>
+    <!-- end results header -->
+{% endblock listboard_table_header %}
+
+
+{% block listboard_table_button_column %}
+    <td style="white-space: nowrap;">
+    <div class="btn-group">
+
+
+        {% for group in request.user.groups.all %}
+            {% if group.name == result.object.reception.name %}
+                {% if result.recep_received == '' %}
+
+        <form method="post" action="{% url reception_docs_listboard_url %}">
+              {% csrf_token %}
+                  <input type="hidden" name="identifier" value="{{ result.doc_identifier }}">
+                  <input type="hidden" name="update" value="received_at_primary">
+                  <input type="submit" value="Receive Document" class="btn btn-warning btn-sm">
+        </form>
+
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+
+
+        {% for group in request.user.groups.all %}
+            {% if group.name == result.object.secondary_recep.name %}
+                {% if result.courier != '' and result.secondary_recep_received == '' %}
+
+        <form method="post" action="{% url reception_docs_listboard_url %}">
+              {% csrf_token %}
+                  <input type="hidden" name="identifier" value="{{ result.doc_identifier }}">
+                  <input type="hidden" name="update" value="received_at_secondary">
+                  <input type="submit" value="Receive Document" class="btn btn-warning btn-sm">
+        </form>
+
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+
+
+    </div>
+    </td>
+{% endblock listboard_table_button_column %}
+
+
+{% block listboard_table_columns %}
+	
+	<td nowrap>{{ result.doc_obj.document_name }}</td>
+    <td nowrap>{{ result.user_created }}</td>
+    <td nowrap>{% if result.object.send_to.get_full_name %}
+        {{result.object.send_to.get_full_name}} {% else %} - - - - {% endif %}</td>
+    <td nowrap>{{ result.object.department }}</td>
+    {% if result.status == 'sent' %}
+        <td nowrap>pending</td>
+    {% elif result.status == 'received' %}
+        <td nowrap>successfully sent</td>
+    {% else %}
+    <td nowrap>{{ result.status }}</td>
+    {% endif %}
+    <td nowrap>{{ result.sent_date }}</td>
+
+<form id="courier_nd_recep" method="post" action="{% url reception_docs_listboard_url %}">
+     {% csrf_token %}
+
+<td>
+    <input type="hidden" name="identifier" value="{{ result.doc_identifier }}">
+    <input type="hidden" name="update" value="update courier">
+
+{% if result.recep_received != '' and result.courier == '' %}
+    {% for group in request.user.groups.all %}
+        {% if group.name == result.object.reception.name %}
+                <select id="courier" name="courier">
+            {% if result.courier %}
+                <option value="{{ result.courier }}" selected>{{ result.courier }}</option>
+            {% else %}
+                <option value="">-----</option>
+            {% endif %}
+
+            {% for courier in couriers %}
+                <option value="{{ courier }}">{{ courier }}</option>
+            {% endfor %}
+                </select>
+                    <input type="submit" value="Update" style="font-size: small; color: #003366;" class="">
+        {% elif group.name != result.object.reception.name %}
+    {% endif %}
+
+    {% endfor %}
+{% elif result.recep_received %}
+    {{ result.courier }}
+{% else %}
+    -----
+{% endif %}
+
+</td>
+
+<td>
+{% for group in request.user.groups.all %}
+    {% if group.name == result.object.secondary_recep.name %}
+        {% if result.courier != '' and not result.handed_over and result.secondary_recep_received %}
+            <form method="post" action="{% url reception_docs_listboard_url %}">
+              {% csrf_token %}
+                  <input type="hidden" name="identifier" value="{{ result.doc_identifier }}">
+                  <input type="hidden" name="update" value="hand_over">
+
+                <!--<i class="far fa-handshake fa-lg fa-fw"></i> -->
+                <input type="submit" value="Hand-Over" class="btn btn-warning btn-sm">
+            </form>
+        {% endif %}
+    {% endif %}
+{% endfor %}
+{% if result.handed_over %}
+    Document Handed Over
+{% endif %}
+</td>
+
+<td nowrap>{{ result.object.secondary_recep }}</td>
+
+</form>
+
+    <td nowrap>{{ result.object.received_by }}</td>
+
+{% endblock listboard_table_columns %}
