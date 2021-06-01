@@ -80,7 +80,6 @@ class SharedDocumentsListBoardView(
 
         # user_groups = request.user.groups.all()
         #
-        # import pdb; pdb.set_trace()
         #
         # if user_groups:
         #     for group in user_groups:

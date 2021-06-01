@@ -53,7 +53,6 @@ class SentToMeListBoardView(
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         doc_identifier = kwargs.get('doc_identifier', None)
-        # import pdb; pdb.set_trace()
         context.update(
             doc_identifier=doc_identifier,
             document=self.document(doc_identifier=doc_identifier),
@@ -111,7 +110,7 @@ class SentToMeListBoardView(
                 SendDocument.objects.filter(
                     transaction_identifier=identifier).update(
                     status='received',
-                    received_by=request.user)
+                    received_by=request.user.username)
                 print("Document set to received")
             try:
                 url_name = request.url_name_data['sent_to_me_listboard_url']
